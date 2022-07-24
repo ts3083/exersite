@@ -16,20 +16,23 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    private String name;
-    private String nickname;
-
     @Column(name = "login_email_id")
     private String loginId;
-    private String password;
 
     @Embedded
     private Address address;
-    private LocalDateTime memberDate;
-    private MemberStatus memberStatus;
 
+    @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private MemberStatus memberStatus; // 회원 상태 [MEMBER, DELETED]
 
+    private String name;
+    private String nickname;
+    private String password;
+    private LocalDateTime memberDate;
 }
