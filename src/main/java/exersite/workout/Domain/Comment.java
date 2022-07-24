@@ -25,4 +25,10 @@ public class Comment {
     private LocalDateTime commentDate;
     private String content;
     private Integer likes;
+
+    // 연관관계 메서드
+    public void setMember(Member member) {
+        this.member = member;
+        member.getComments().add(this);
+    }
 }
