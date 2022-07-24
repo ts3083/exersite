@@ -15,11 +15,12 @@ public class Post {
     @Column(name = "post_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // 게시글 저장되면 member 자동 DB저장
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post")
+    // 댓글 add하고 게시글 객체 persist하면 댓글을 따로 persist하지 않아도 DB에 저장
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)
