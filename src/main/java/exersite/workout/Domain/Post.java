@@ -28,8 +28,8 @@ public class Post {
     private PostCategory postCategory;
 
     private LocalDateTime postDate;
-    private Integer views;
-    private Integer likes;
+    private int views;
+    private int likes;
     private String title;
     private String content;
 
