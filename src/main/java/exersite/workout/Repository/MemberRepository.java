@@ -31,4 +31,10 @@ public class MemberRepository {
                 .setParameter("name", name)
                 .getResultList();
     }
+
+    public List<Member> findByLoginId(String loginId) { // 특정 loginId를 같은 회원리스트 조회
+        return em.createQuery("select m from Member m where m.loginId = :loginId", Member.class)
+                .setParameter("loginId", loginId)
+                .getResultList();
+    }
 }
