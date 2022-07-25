@@ -24,7 +24,7 @@ public class Comment {
 
     private LocalDateTime commentDate;
     private String content;
-    private Integer likes;
+    private int likes;
 
     // 연관관계 메서드
     public void setMember(Member member) {
