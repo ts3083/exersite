@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -11,12 +12,10 @@ import java.util.List;
 @Getter @Setter
 public class PostCategory {
 
-    @Id @GeneratedValue
-    @Column(name = "post_category_id")
-    private Long id;
+    @Id
+    @Column(name = "post_category_name")
+    private String name;
 
     @OneToMany(mappedBy = "postCategory")
     private List<Post> posts;
-
-    private String name;
 }

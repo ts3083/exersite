@@ -21,11 +21,12 @@ public class PostService {
 
     // 게시글 저장
     @Transactional
-    public Long savePost(Long memberId, Long postCategoryId,
+    public Long savePost(Long memberId, String postCategoryName,
                          String title, String content) {
         // 회원 찾아오기
         Member member = memberRepository.findOne(memberId);
-        PostCategory postCategory = postCategoryRepository.findOne(postCategoryId);
+        PostCategory postCategory = postCategoryRepository
+                .findOneByName(postCategoryName);
 
         // 게시글 생성 - 회원, 카테고리, 제목, 본문
         Post post = Post.createPost(member, postCategory, title, content);

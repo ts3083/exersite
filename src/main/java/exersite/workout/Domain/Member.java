@@ -35,4 +35,19 @@ public class Member {
     private String nickname;
     private String password;
     private LocalDateTime memberDate;
+
+    // 생성메서드
+    public static Member createMember(String loginId, Address address,
+                                      String name, String nickname,
+                                      String password) {
+        Member member = new Member();
+        member.setLoginId(loginId);
+        member.setAddress(address);
+        member.setName(name);
+        member.setNickname(nickname);
+        member.setMemberStatus(MemberStatus.MEMBER);
+        member.setPassword(password);
+        member.setMemberDate(LocalDateTime.now());
+        return member;
+    }
 }
