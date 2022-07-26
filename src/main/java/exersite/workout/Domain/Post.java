@@ -48,4 +48,17 @@ public class Post {
         this.postCategory = postCategory;
         postCategory.getPosts().add(this);
     }
+
+    // 비즈니스 로직
+    public void clickLike() { // 좋아요 증가
+        this.likes++;
+    }
+
+    public void cancelLike() { // 좋아요 취소
+        this.likes--;
+    }
+
+    public void clickPost() { // 조회수 증가
+        this.views++;
+    }
 }

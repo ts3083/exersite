@@ -31,4 +31,13 @@ public class Comment {
         this.member = member;
         member.getComments().add(this);
     }
+
+    // 비즈니스 로직
+    public void clickLike() { // 좋아요 증가
+        this.likes++;
+    }
+
+    public void cancelLike() { // 좋아요 취소
+        this.likes--;
+    }
 }
