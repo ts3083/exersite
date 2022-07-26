@@ -1,8 +1,8 @@
 package exersite.workout.Repository;
 
 import exersite.workout.Domain.Post;
-import exersite.workout.Domain.PostCategory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -26,7 +26,11 @@ public class PostRepository {
 
     // 게시글 id로 조회
     public Post findOne(Long postId) {
-        return em.find(Post.class, postId);
+        Post post = em.find(Post.class, postId);
+        if(post == null) {
+            throw new InvalidDataAccessApiUsageException("삭제된 게시글입니다");
+        }
+        return post;
     }
 
     // 특정 회원이 작성한 모든 게시글 조회(jpql)
@@ -38,10 +42,10 @@ public class PostRepository {
     }
 
     // 특정 카테고리 게시글 리스트 조회
-    public List<Post> findAllByPostCategory(Long postCategoryId) {
+    public List<Post> findAllByPostCategory(String postCategoryName) {
         return em.createQuery("select p from Post p join p.postCategory pc " +
-                        "where pc.id = :Id", Post.class)
-                .setParameter("Id", postCategoryId)
+                        "where pc.name = :name", Post.class)
+                .setParameter("name", postCategoryName)
                 .getResultList();
     }
 }

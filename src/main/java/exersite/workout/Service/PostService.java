@@ -42,4 +42,12 @@ public class PostService {
         Post post = postRepository.findOne(postId);
         postRepository.remove(post);
     }
+
+    // 게시글 수정
+    @Transactional
+    public void updateTitleContent(Long postId, String title, String content) {
+        Post post = postRepository.findOne(postId);
+        post.setTitle(title);
+        post.setContent(content);
+    }
 }
