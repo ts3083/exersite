@@ -32,6 +32,17 @@ public class Comment {
         member.getComments().add(this);
     }
 
+    // 생성 메서드
+    public static Comment createComment(Member member, Post post, String content) {
+        Comment comment = new Comment();
+        comment.setMember(member);
+        comment.setPost(post);
+        comment.setContent(content);
+        comment.setLikes(0);
+        comment.setCommentDate(LocalDateTime.now());
+        return comment;
+    }
+
     // 비즈니스 로직
     public void clickLike() { // 좋아요 증가
         this.likes++;

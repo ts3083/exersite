@@ -49,6 +49,20 @@ public class Post {
         postCategory.getPosts().add(this);
     }
 
+    // 생성 메서드
+    public static Post createPost(Member member, PostCategory postCategory,
+                                  String title, String content) {
+        Post post = new Post();
+        post.setMember(member);
+        post.setPostCategory(postCategory);
+        post.setTitle(title);
+        post.setContent(content);
+        post.setLikes(0);
+        post.setViews(0);
+        post.setPostDate(LocalDateTime.now());
+        return post;
+    }
+
     // 비즈니스 로직
     public void clickLike() { // 좋아요 증가
         this.likes++;
