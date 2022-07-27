@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class PostService {
 
@@ -20,7 +20,6 @@ public class PostService {
     private final PostCategoryRepository postCategoryRepository;
 
     // 게시글 저장
-    @Transactional
     public Long savePost(Long memberId, String postCategoryName,
                          String title, String content) {
         // 회원 찾아오기
@@ -37,17 +36,21 @@ public class PostService {
     }
 
     // 게시글 삭제
-    @Transactional
     public void deletePost(Long postId) {
         Post post = postRepository.findOne(postId);
         postRepository.remove(post);
     }
 
     // 게시글 수정
-    @Transactional
     public void updateTitleContent(Long postId, String title, String content) {
         Post post = postRepository.findOne(postId);
         post.setTitle(title);
         post.setContent(content);
+    }
+
+    // 게시글 조회
+    @Transactional(readOnly = true)
+    public Post findOne(Long postId) {
+        return postRepository.findOne(postId);
     }
 }

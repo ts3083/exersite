@@ -5,7 +5,6 @@ import exersite.workout.Domain.Member;
 import exersite.workout.Domain.Post;
 import exersite.workout.Domain.PostCategory;
 import exersite.workout.Repository.PostCategoryRepository;
-import exersite.workout.Repository.PostRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +23,6 @@ public class PostServiceTest {
 
     @Autowired
     PostService postService;
-    @Autowired
-    PostRepository postRepository;
     @Autowired
     MemberService memberService;
     @Autowired
@@ -52,7 +49,7 @@ public class PostServiceTest {
                 postCategory.getName(), title, content);
 
         //then
-        Post findPost = postRepository.findOne(savePostId);
+        Post findPost = postService.findOne(savePostId);
         Assert.assertEquals("게시글 작성 회원의 이름 확인", member.getName(),
                 findPost.getMember().getName());
         Assert.assertEquals("게시글 제목이 같은지 확인", title,
@@ -85,7 +82,7 @@ public class PostServiceTest {
                 "수정후 제목", "수정후 본문");
 
         //then
-        Post findPost = postRepository.findOne(savePostId);
+        Post findPost = postService.findOne(savePostId);
         Assert.assertEquals("게시글 작성 회원의 이름 확인", member.getName(),
                 findPost.getMember().getName());
         Assert.assertEquals("게시글 제목이 같은지 확인", "수정후 제목",
@@ -116,7 +113,7 @@ public class PostServiceTest {
 
         //then
         postService.deletePost(savePostId);
-        Post findDeletedPost = postRepository.findOne(savePostId);
+        Post findDeletedPost = postService.findOne(savePostId);
         fail("예외가 발생해야 합니다");
     }
 }
