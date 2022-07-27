@@ -31,7 +31,7 @@ public class CommentRepository {
     // 특정 회원이 작성한 모든 댓글 조회(jpql)
     public List<Comment> findAllByMember(Long memberId) {
         return em.createQuery("select c from Comment c join c.member m " +
-                "where m.id = :Id", Comment.class)
+                        "on m.id = :Id", Comment.class)
                 .setParameter("Id", memberId)
                 .getResultList();
     }
@@ -39,7 +39,7 @@ public class CommentRepository {
     // 특정 게시물에 작성된 모든 댓글 조회(jpql)
     public List<Comment> findAllByPost(Long postId) {
         return em.createQuery("select c from Comment c join c.post p " +
-                        "where p.id = :Id", Comment.class)
+                        "on p.id = :Id", Comment.class)
                 .setParameter("Id", postId)
                 .getResultList();
     }
