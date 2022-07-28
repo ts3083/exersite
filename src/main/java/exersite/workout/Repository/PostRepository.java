@@ -1,5 +1,7 @@
 package exersite.workout.Repository;
 
+import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Member;
 import exersite.workout.Domain.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -19,8 +21,16 @@ public class PostRepository {
         em.persist(post);
     }
 
-    // 댓글 삭제
+    // 게시글 삭제 - 영속성 전이로 DB의 게시글에 달린 댓글들 사리짐
+    // + 객체 관점에서 member의 posts에서 삭제 + 댓글들 member의 comments에서 삭제되어야 함
     public void remove(Post post) {
+        Member member = post.getMember();
+        post.deletePost(member); // 게시글과 회원의 posts에서 게시글 삭제
+
+        List<Comment> comments = post.getComments();
+        for (Comment c : comments) {
+            c.deleteMemberfromCommmment(c.getMember());
+        }
         em.remove(post);
     }
 

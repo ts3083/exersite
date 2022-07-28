@@ -1,7 +1,10 @@
 package exersite.workout.Repository;
 
 import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Member;
+import exersite.workout.Domain.Post;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -18,14 +21,21 @@ public class CommentRepository {
         em.persist(comment);
     }
 
-    // 댓글 삭제
+    // 댓글 삭제 - post의 comments에서도 삭제 + memeber의 comments에서도 삭제
     public void remove(Comment comment) {
+        Member member = comment.getMember();
+        Post post = comment.getPost();
+        comment.deleteComment(member, post);
         em.remove(comment);
     }
 
     // 댓글 id로 조회
     public Comment findOne(Long id) {
-        return em.find(Comment.class, id);
+        Comment comment = em.find(Comment.class, id);
+        if(comment == null) {
+            throw new InvalidDataAccessApiUsageException("삭제된 댓글입니다");
+        }
+        return comment;
     }
 
     // 특정 회원이 작성한 모든 댓글 조회(jpql)

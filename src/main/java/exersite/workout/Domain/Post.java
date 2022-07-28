@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class Post {
 
     // 댓글 add하고 게시글 객체 persist하면 댓글을 따로 persist하지 않아도 DB에 저장
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_category_id")
@@ -39,14 +40,13 @@ public class Post {
         member.getPosts().add(this);
     }
 
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
-        comment.setPost(this);
-    }
-
     public void setPostCategory(PostCategory postCategory) {
         this.postCategory = postCategory;
         postCategory.getPosts().add(this);
+    }
+
+    public void deletePost(Member member) {
+        member.getPosts().remove(this);
     }
 
     // 생성 메서드

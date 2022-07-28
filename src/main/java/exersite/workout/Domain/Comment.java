@@ -32,6 +32,20 @@ public class Comment {
         member.getComments().add(this);
     }
 
+    public void setPost(Post post) {
+        this.post = post;
+        post.getComments().add(this);
+    }
+
+    public void deleteComment(Member member, Post post) {
+        member.getComments().remove(this);
+        post.getComments().remove(this);
+    }
+
+    public void deleteMemberfromCommmment(Member member) {
+        member.getComments().remove(this);
+    }
+
     // 생성 메서드
     public static Comment createComment(Member member, Post post, String content) {
         Comment comment = new Comment();

@@ -106,7 +106,7 @@ public class PostServiceTest {
 
         //then
         postService.deletePost(savePostId);
-        Post findDeletedPost = postService.findOne(savePostId);
+        postService.findOne(savePostId);
         fail("예외가 발생해야 합니다");
     }
 
