@@ -36,7 +36,7 @@ public class PostRepository {
     // 특정 회원이 작성한 모든 게시글 조회(jpql)
     public List<Post> findAllByMember(Long memberId) {
         return em.createQuery("select p from Post p join p.member m " +
-                        "on m.id = :Id", Post.class)
+                        "on m.id = :Id order by p.postDate desc", Post.class)
                 .setParameter("Id", memberId)
                 .getResultList();
     }
@@ -44,7 +44,7 @@ public class PostRepository {
     // 특정 카테고리 게시글 리스트 조회
     public List<Post> findAllByPostCategory(String postCategoryName) {
         return em.createQuery("select p from Post p join p.postCategory pc " +
-                        "on pc.name = :name", Post.class)
+                        "on pc.name = :name order by p.postDate desc", Post.class)
                 .setParameter("name", postCategoryName)
                 .getResultList();
     }
