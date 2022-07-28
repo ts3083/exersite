@@ -41,6 +41,12 @@ public class CommentService {
         commentRepository.remove(findComment);
     }
 
+    // 댓글 수정
+    public void updateComment(Long commentId, String newContent) {
+        Comment comment = commentRepository.findOne(commentId);
+        comment.setContent(newContent);
+    }
+
     // Comment id로 조회
     @Transactional(readOnly = true)
     public Comment findOne(Long commentId) {

@@ -4,6 +4,7 @@ import exersite.workout.Domain.Address;
 import exersite.workout.Domain.Comment;
 import exersite.workout.Domain.Member;
 import exersite.workout.Domain.Post;
+import exersite.workout.Repository.CommentRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,8 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -24,6 +27,7 @@ public class CommentServiceTest {
     @Autowired CommentService commentService;
     @Autowired MemberService memberService;
     @Autowired PostService postService;
+    @Autowired CommentRepository commentRepository;
 
     @Test
     public void 댓글_저장() throws Exception {
@@ -89,19 +93,40 @@ public class CommentServiceTest {
     @Test
     public void 댓글_수정() throws Exception {
         //given
+        Long memberAId = createAndSaveSampleMemberA(); // 회원 A 저장
+        Long postId = postService.savePost(memberAId,
+                "자유게시판", "t", "c"); // 회원 A가 게시글 저장
+        Long saveCommentId1 = commentService.saveComment(memberAId, postId, "test");
 
         //when
+        commentService.updateComment(saveCommentId1, "newtest");
 
         //then
+        Comment findComment = commentService.findOne(saveCommentId1);
+        Assert.assertEquals("수정된 댓글 내용은 newtest", "newtest", findComment.getContent());
     }
 
     @Test
     public void 회원작성_댓글목록조회() throws Exception {
         //given
+        Long memberAId = createAndSaveSampleMemberA(); // 회원 A 저장
+        Long memberBId = createAndSaveSampleMemberB(); // 회원 B 저장
+        Long postAId = postService.savePost(memberAId,
+                "자유게시판", "t", "c"); // 회원 A가 게시글 저장
 
         //when
+        commentService.saveComment(memberAId, postAId, "A comment1");
+        commentService.saveComment(memberAId, postAId, "A comment2");
+        commentService.saveComment(memberBId, postAId, "B comment1");
+        commentService.saveComment(memberBId, postAId, "B comment2");
 
         //then
+        List<Comment> commentsByA = commentRepository.findAllByMember(memberAId);
+        List<Comment> commentsByB = commentRepository.findAllByMember(memberBId);
+        Assert.assertEquals("A의 댓글 수는 2개", 2, commentsByA.size());
+        Assert.assertEquals("B의 댓글 수는 2개", 2, commentsByB.size());
+        Assert.assertEquals("A comment2", commentsByA.get(0).getContent());
+        Assert.assertEquals("B comment2", commentsByB.get(0).getContent());
     }
 
     private Long createAndSaveSampleMemberA() {
@@ -117,5 +142,4 @@ public class CommentServiceTest {
                 "test2", "B", "55555");
         return memberService.join(member);
     }
-
 }
