@@ -26,9 +26,12 @@ public class InitDb {
         private final EntityManager em;
 
         public void dbInit() {
-            PostCategory postCategory = new PostCategory();
-            postCategory.setName("자유게시판");
-            em.persist(postCategory);
+            PostCategory postCategory1 = new PostCategory();
+            postCategory1.setName("자유게시판");
+            em.persist(postCategory1);
+            PostCategory postCategory2 = new PostCategory();
+            postCategory2.setName("비밀게시판");
+            em.persist(postCategory2);
         }
     }
 }
