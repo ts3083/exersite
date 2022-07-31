@@ -58,4 +58,11 @@ public class PostRepository {
                 .setParameter("name", postCategoryName)
                 .getResultList();
     }
+
+    // 게시글과 게시글 작성자 이름을 조회하기 위한 fetch join
+    public List<Post> findAllPostsAndMemberNameWithFetch() {
+        return em.createQuery("select p from Post p " +
+                        " join fetch p.member m", Post.class)
+                .getResultList();
+    }
 }
