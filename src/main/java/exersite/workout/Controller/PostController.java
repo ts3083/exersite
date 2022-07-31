@@ -33,6 +33,19 @@ public class PostController {
         return "posts/freeboard";
     }
 
+    @GetMapping("/posts/secretCategory")
+    public String secretCategoryPosts(Model model) {
+        List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
+        List<PostDto> secretPosts = new ArrayList<>();
+        for (Post p : posts) {
+            if(p.getPostCategory().getName().compareTo("비밀게시판") == 0){ // 자유게시판 글 필터링
+                secretPosts.add(new PostDto(p));
+            }
+        }
+        model.addAttribute("freePosts", secretPosts);
+        return "posts/secretboard";
+    }
+
     @Data
     static class PostDto { // 게시글 목록을 위해 전달하는 dto
         private Long id;
