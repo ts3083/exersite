@@ -9,10 +9,6 @@ import javax.validation.constraints.NotEmpty;
 public class PostForm {
 
     @NotEmpty(message = "필수 사항")
-    private String memberName;
-    @NotEmpty(message = "필수 사항")
-    private String postCategory;
-    @NotEmpty(message = "필수 사항")
     private String title;
     @NotEmpty(message = "필수 사항")
     private String content;

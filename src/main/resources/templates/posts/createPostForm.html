@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<style>
+    .fieldError {
+        border-color: #bd2130;
+    }
+</style>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <form role="form" action="/posts/createPost" th:object="${postForm}"
+          method="post">
+        <div class="form-group">
+            <label for="member">작성 회원</label>
+            <select name="memberId" id="member" class="form-control">
+                <option value="">회원선택</option>
+                <option th:each="member : ${members}"
+                        th:value="${member.id}"
+                        th:text="${member.name}" />
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="postCategory">게시글 카테고리</label>
+            <select name="postCategoryName" id="postCategory" class="form-control">
+                <option value="">카테고리 선택</option>
+                <option th:each="category : ${postCategories}"
+                        th:value="${category.name}"
+                        th:text="${category.name}" />
+            </select>
+        </div>
+        <div class="form-group">
+            <label th:for="title">제목</label>
+            <input type="text" th:field="*{title}" class="form-control"
+                   placeholder="제목을 입력하세요"
+                   th:class="${#fields.hasErrors('title')}? 'form-control fieldError' : 'form-control'">
+            <p th:if="${#fields.hasErrors('title')}"
+               th:errors="*{title}">Incorrect date</p>
+        </div>
+        <div class="form-group">
+            <label th:for="content">본문 내용</label>
+            <textarea cols="150" rows="10" id="contents" th:field="*{content}"
+                      class="form-control" placeholder="내용을 입력하세요."
+                   th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'">
+            </textarea>
+            <p th:if="${#fields.hasErrors('content')}"
+               th:errors="*{content}">Incorrect date</p>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    <br/>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</script>
+
+</html>
