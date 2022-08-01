@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <div>
+            <form th:object="${postSearch}" class="form-inline">
+                <div class="form-group mb-2">
+                    <input type="text" th:field="*{titleOrContent}" class="formcontrol" placeholder="제목+내용"/>
+                </div>
+                <div class="form-group mb-2">
+                    <input type="text" th:field="*{nickname}" class="formcontrol" placeholder="작성자 활동명"/>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">검색</button>
+            </form>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>글 id</th>
+                <th>글 제목</th>
+                <th>작성자</th>
+                <th>조회수</th>
+                <th>공감수</th>
+                <th>등록일</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${posts}">
+                <td th:text="${post.id}"></td>
+                <td th:text="${post.title}"></td>
+                <td th:text="${post.member.nickname}"></td>
+                <td th:text="${post.views}"></td>
+                <td th:text="${post.likes}"></td>
+                <td th:text="${post.postDate}"></td>
+                <td>
+                    <a href="#"
+                       th:href="'javascript:deta('+${post.id}+')'"
+                       class="btn-light">상세보기</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+<script>
+    function deta(id) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/posts/" + id + "/detail");
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</html>

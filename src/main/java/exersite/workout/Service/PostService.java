@@ -3,12 +3,16 @@ package exersite.workout.Service;
 import exersite.workout.Domain.Member;
 import exersite.workout.Domain.Post;
 import exersite.workout.Domain.PostCategory;
+import exersite.workout.Domain.PostSearch;
 import exersite.workout.Repository.MemberRepository;
 import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -53,4 +57,40 @@ public class PostService {
     public Post findOne(Long postId) {
         return postRepository.findOne(postId);
     }
+
+    @Transactional(readOnly = true)
+    public List<Post> findPosts(PostSearch postSearch) {
+        List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
+        if (postSearch.getTitleOrContent() == null
+                && postSearch.getNickname() == null) {
+            // 바로 posts 반환
+            return posts;
+        }
+        // 필터링
+        List<Post> result = new ArrayList<>();
+        for (Post p : posts) {
+            if (isPostSearchContain(postSearch, p)) {
+                result.add(p);
+            }
+        }
+        return result;
+    }
+
+    private boolean isPostSearchContain(PostSearch postSearch, Post p) {
+        if (!postSearch.getTitleOrContent().equals("")) {
+            if (p.getTitle().contains(postSearch.getTitleOrContent())) {
+                return true;
+            }
+            else if (p.getContent().contains(postSearch.getTitleOrContent())) {
+                return true;
+            }
+        }
+        else if (!postSearch.getNickname().equals("")
+                && p.getMember().getNickname().contains(postSearch.getNickname())) {
+            return true;
+
+        }
+        return false;
+    }
+
 }
