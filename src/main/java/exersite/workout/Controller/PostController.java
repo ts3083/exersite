@@ -13,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -42,7 +39,7 @@ public class PostController {
             }
         }
         model.addAttribute("freePosts", freePosts);
-        return "posts/freeboard";
+        return "posts/freeBoard";
     }
 
     @GetMapping("/posts/secretCategory")
@@ -54,27 +51,8 @@ public class PostController {
                 secretPosts.add(new PostDto(p));
             }
         }
-        model.addAttribute("freePosts", secretPosts);
-        return "posts/secretboard";
-    }
-
-    @Data
-    static class PostDto { // 게시글 목록을 위해 전달하는 dto
-        private Long id;
-        private String title;
-        private String nickname;
-        private int views;
-        private int likes;
-        private LocalDateTime postDate;
-
-        public PostDto(Post post) {
-            this.id = post.getId();
-            this.title = post.getTitle();
-            this.nickname = post.getMember().getNickname();
-            this.views = post.getViews();
-            this.likes = post.getLikes();
-            this.postDate = post.getPostDate();
-        }
+        model.addAttribute("secretPosts", secretPosts);
+        return "posts/secretBoard";
     }
 
     @GetMapping("/posts/createPost")
@@ -109,5 +87,33 @@ public class PostController {
         List<Post> posts = postService.findPosts(postSearch);
         model.addAttribute("posts", posts);
         return "posts/postList";
+    }
+
+    @GetMapping("/posts/{postId}/detail")
+    public String detailPost(@PathVariable("postId") Long postId, Model model) {
+        Post post = postService.findOne(postId);
+        PostDto postDto = new PostDto(post);
+        model.addAttribute("postDto", postDto);
+        return "posts/detailInformation";
+    }
+    @Data
+    static class PostDto {
+        private Long id;
+        private String title;
+        private String content;
+        private String nickname;
+        private int views;
+        private int likes;
+        private LocalDateTime postDate;
+
+        public PostDto(Post post) {
+            this.id = post.getId();
+            this.title = post.getTitle();
+            this.content = post.getContent();
+            this.nickname = post.getMember().getNickname();
+            this.views = post.getViews();
+            this.likes = post.getLikes();
+            this.postDate = post.getPostDate();
+        }
     }
 }
