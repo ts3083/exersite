@@ -4,7 +4,8 @@
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <form role="form" th:object="${postDto}" method="post">
+    <form role="form" th:object="${postDto}"  action="/posts/updatePostForm"
+          method="post">
         <div class="form-group">
             <label th:for="postId">글 ID</label>
             <input type="text" th:field="*{id}" class="form-control"
@@ -33,12 +34,12 @@
         <div class="form-group">
             <label th:for="title">글 제목</label>
             <input type="text" th:field="*{title}" class="form-control"
-                   th:value="${postDto.title}">
+                   th:value="${postUpdateForm.title}">
         </div>
         <div class="form-group">
             <label th:for="content">글 내용</label>
             <textarea cols="150" rows="10" id="contents" th:field="*{content}"
-                      class="form-control" th:value="${postDto.content}">
+                      class="form-control" th:value="${postUpdateForm.content}">
             </textarea>
         </div>
         <br/>

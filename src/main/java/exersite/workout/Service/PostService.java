@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class PostService {
         Post post = postRepository.findOne(postId);
         post.setTitle(title);
         post.setContent(content);
+        post.setPostDate(LocalDateTime.now());
     }
 
     // 게시글 조회

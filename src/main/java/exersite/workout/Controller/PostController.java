@@ -119,10 +119,29 @@ public class PostController {
 
     // 게시글 수정
     @GetMapping("/posts/{id}/edit")
-    public String updatePost(@PathVariable("id") Long postId, Model model) {
+    public String updatePostForm(@PathVariable("id") Long postId, Model model) {
         Post post = postService.findOne(postId);
-        PostDto postDto = new PostDto(post);
-        model.addAttribute("postDto", postDto);
+        PostUpdateDto postUpdateDto = new PostUpdateDto(postId);
+        model.addAttribute("postDto", new PostDto(post));
+        model.addAttribute("postUpdateForm", postUpdateDto);
         return "posts/updatePostForm";
+    }
+
+    @PostMapping("/posts/updatePostForm")
+    public String updatePost(@Valid PostUpdateDto postUpdateDto) {
+        postService.updateTitleContent(postUpdateDto.getId(),
+                postUpdateDto.getTitle(), postUpdateDto.getContent());
+        return "redirect:/";
+    }
+
+    @Data
+    static class PostUpdateDto {
+        private Long id;
+        private String title;
+        private String content;
+
+        public PostUpdateDto(Long id) {
+            this.id = id;
+        }
     }
 }
