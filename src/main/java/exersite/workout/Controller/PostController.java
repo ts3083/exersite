@@ -116,4 +116,13 @@ public class PostController {
             this.postDate = post.getPostDate();
         }
     }
+
+    // 게시글 수정
+    @GetMapping("/posts/{id}/edit")
+    public String updatePost(@PathVariable("id") Long postId, Model model) {
+        Post post = postService.findOne(postId);
+        PostDto postDto = new PostDto(post);
+        model.addAttribute("postDto", postDto);
+        return "posts/updatePostForm";
+    }
 }

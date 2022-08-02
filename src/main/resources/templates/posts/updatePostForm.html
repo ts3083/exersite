@@ -4,7 +4,7 @@
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <form role="form" th:object="${postDto}">
+    <form role="form" th:object="${postDto}" method="post">
         <div class="form-group">
             <label th:for="postId">글 ID</label>
             <input type="text" th:field="*{id}" class="form-control"
@@ -33,24 +33,17 @@
         <div class="form-group">
             <label th:for="title">글 제목</label>
             <input type="text" th:field="*{title}" class="form-control"
-                   th:value="${postDto.title}" readonly>
+                   th:value="${postDto.title}">
         </div>
         <div class="form-group">
             <label th:for="content">글 내용</label>
             <textarea cols="150" rows="10" id="contents" th:field="*{content}"
-                      class="form-control" th:value="${postDto.content}" readonly>
+                      class="form-control" th:value="${postDto.content}">
             </textarea>
         </div>
         <br/>
         <div class="row">
-            <div class="col">
-                <a href="#" th:href="@{/posts/{id}/edit (id=${postId})}"
-                   class="btn btn-primary" role="button">수정</a>
-            </div>
-            <div class="col">
-                <a href="#" th:href="@{/posts/{id}/delete (id=${postId})}"
-                   class="btn btn-primary" role="button" methods="post">삭제</a>
-            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
     <br/>
