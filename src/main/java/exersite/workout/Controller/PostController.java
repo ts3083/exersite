@@ -6,6 +6,8 @@ import exersite.workout.Domain.PostCategory;
 import exersite.workout.Domain.PostSearch;
 import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.PostRepository;
+import exersite.workout.Repository.post.simplequery.PostDto;
+import exersite.workout.Repository.post.simplequery.PostSearchQueryRepository;
 import exersite.workout.Service.MemberService;
 import exersite.workout.Service.PostService;
 import lombok.Data;
@@ -16,8 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,29 +28,34 @@ public class PostController {
     private final PostCategoryRepository postCategoryRepository;
     private final PostRepository postRepository;
     private final PostService postService;
+    private final PostSearchQueryRepository postSearchQueryRepository;
 
     @GetMapping("/posts/freeCategory")
     public String freeCategoryPosts(Model model) {
-        List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
-        List<PostDto> freePosts = new ArrayList<>();
-        for (Post p : posts) {
-            if(p.getPostCategory().getName().compareTo("자유게시판") == 0){ // 자유게시판 글 필터링
-                freePosts.add(new PostDto(p));
-            }
-        }
+//        List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
+//        List<PostDto> freePosts = new ArrayList<>();
+//        for (Post p : posts) {
+//            if(p.getPostCategory().getName().compareTo("자유게시판") == 0){ // 자유게시판 글 필터링
+//                freePosts.add(new PostDto(p));
+//            }
+//        }
+        List<PostDto> freePosts = postSearchQueryRepository
+                .findPostDtos("자유게시판");
         model.addAttribute("freePosts", freePosts);
         return "posts/freeBoard";
     }
 
     @GetMapping("/posts/secretCategory")
     public String secretCategoryPosts(Model model) {
-        List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
-        List<PostDto> secretPosts = new ArrayList<>();
-        for (Post p : posts) {
-            if(p.getPostCategory().getName().compareTo("비밀게시판") == 0){ // 자유게시판 글 필터링
-                secretPosts.add(new PostDto(p));
-            }
-        }
+//        List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
+//        List<PostDto> secretPosts = new ArrayList<>();
+//        for (Post p : posts) {
+//            if(p.getPostCategory().getName().compareTo("비밀게시판") == 0){ // 자유게시판 글 필터링
+//                secretPosts.add(new PostDto(p));
+//            }
+//        }
+        List<PostDto> secretPosts = postSearchQueryRepository
+                .findPostDtos("비밀게시판");
         model.addAttribute("secretPosts", secretPosts);
         return "posts/secretBoard";
     }
@@ -95,26 +100,6 @@ public class PostController {
         PostDto postDto = new PostDto(post);
         model.addAttribute("postDto", postDto);
         return "posts/detailInformation";
-    }
-    @Data
-    static class PostDto {
-        private Long id;
-        private String title;
-        private String content;
-        private String nickname;
-        private int views;
-        private int likes;
-        private LocalDateTime postDate;
-
-        public PostDto(Post post) {
-            this.id = post.getId();
-            this.title = post.getTitle();
-            this.content = post.getContent();
-            this.nickname = post.getMember().getNickname();
-            this.views = post.getViews();
-            this.likes = post.getLikes();
-            this.postDate = post.getPostDate();
-        }
     }
 
     // 게시글 수정
