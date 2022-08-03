@@ -47,10 +47,13 @@
                 <a href="#" th:href="@{/posts/{id}/edit (id=${postId})}"
                    class="btn btn-primary" role="button">수정</a>
             </div>
-            <div class="col">
-                <a href="#" th:href="@{/posts/{id}/delete (id=${postId})}"
-                   class="btn btn-primary" role="button" methods="post">삭제</a>
-            </div>
+        </div>
+    </form>
+    <form role="form" th:object="${postDto}" th:action="@{/posts/{id}/delete (id=${postId})}"
+          method="post">
+        <div class="col">
+            <input type="hidden" value="delete"/>
+            <button id="delete-post" class="btn btn-primary">삭제</button>
         </div>
     </form>
     <br/>

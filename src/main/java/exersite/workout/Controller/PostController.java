@@ -89,7 +89,7 @@ public class PostController {
             , Model model) {
         // 주의 : 처음 넘겼을 때, postSearch의 필드들은 null로 설정됨
         // 검색 버튼을 누르면 : 아무것도 입력하지 않으면 ""으로 넘어옴(구분 필수)
-        List<Post> posts = postService.findPosts(postSearch);
+        List<Post> posts = postService.findPosts(postSearch); // 작성자 정보가 리스트에 없어도 된다면 fetch join만을 이용
         model.addAttribute("posts", posts);
         return "posts/postList";
     }
@@ -128,5 +128,12 @@ public class PostController {
         public PostUpdateDto(Long id) {
             this.id = id;
         }
+    }
+
+    // 게시글 삭제
+    @PostMapping("/posts/{id}/delete")
+    public String deletePost(@PathVariable("id") Long postId) {
+        postService.deletePost(postId);
+        return "redirect:/";
     }
 }
