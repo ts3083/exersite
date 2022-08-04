@@ -67,13 +67,15 @@ public class PostController {
     }
 
     @PostMapping("/posts/createPost")
-    public String post(@RequestParam("memberId") Long memberId,
+    public String post(@RequestParam("memberStringId") String memberStringId,
                        @RequestParam("postCategoryName") String postCategoryName,
                        @Valid PostForm postForm, BindingResult result) {
-        if (memberId == null || postCategoryName.equals("") || result.hasErrors()) {
+        if (memberStringId.equals("") || postCategoryName.equals("") || result.hasErrors()) {
             // 에러가 있으면 다시 게시글 작성 창으로
             return "posts/createPostForm";
         }
+        Long memberId = Long.parseLong(memberStringId);
+
         postService.savePost(memberId, postCategoryName,
                 postForm.getTitle(), postForm.getContent());
         return "redirect:/";
