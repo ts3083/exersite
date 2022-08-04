@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,36 +28,29 @@ public class PostController {
 
     private final MemberService memberService;
     private final PostCategoryRepository postCategoryRepository;
-    private final PostRepository postRepository;
     private final PostService postService;
     private final PostSearchQueryRepository postSearchQueryRepository;
 
     @GetMapping("/posts/freeCategory")
     public String freeCategoryPosts(Model model) {
-//        List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
-//        List<PostDto> freePosts = new ArrayList<>();
-//        for (Post p : posts) {
-//            if(p.getPostCategory().getName().compareTo("자유게시판") == 0){ // 자유게시판 글 필터링
-//                freePosts.add(new PostDto(p));
-//            }
-//        }
-        List<PostDto> freePosts = postSearchQueryRepository
-                .findPostDtos("자유게시판");
+//        List<PostDto> freePosts = postSearchQueryRepository // dto로 조회하는 방법
+//                .findPostDtos("자유게시판");
+        List<Post> posts = postService.findAllDesc("자유게시판");
+        List<PostDto> freePosts = posts.stream()
+                .map(post -> new PostDto(post)).collect(Collectors.toList());
+
         model.addAttribute("freePosts", freePosts);
         return "posts/freeBoard";
     }
 
     @GetMapping("/posts/secretCategory")
     public String secretCategoryPosts(Model model) {
-//        List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
-//        List<PostDto> secretPosts = new ArrayList<>();
-//        for (Post p : posts) {
-//            if(p.getPostCategory().getName().compareTo("비밀게시판") == 0){ // 자유게시판 글 필터링
-//                secretPosts.add(new PostDto(p));
-//            }
-//        }
-        List<PostDto> secretPosts = postSearchQueryRepository
-                .findPostDtos("비밀게시판");
+//        List<PostDto> secretPosts = postSearchQueryRepository // dto로 조회하는 방법
+//                .findPostDtos("비밀게시판");
+        List<Post> posts = postService.findAllDesc("비밀게시판");
+        List<PostDto> secretPosts = posts.stream()
+                .map(post -> new PostDto(post)).collect(Collectors.toList());
+
         model.addAttribute("secretPosts", secretPosts);
         return "posts/secretBoard";
     }

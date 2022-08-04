@@ -65,4 +65,20 @@ public class PostRepository {
                         " join fetch p.member m order by p.postDate desc ", Post.class)
                 .getResultList();
     }
+
+    // 전체 게시글 최신순으로 조회
+    public List<Post> findAllDescPostdate() {
+        return em.createQuery(
+                "select p from Post p order by p.postDate desc ", Post.class)
+                .getResultList();
+    }
+
+    public List<Post> findAllDescPostdate(String postCategoryName) {
+        return em.createQuery(
+                        "select p from Post p " +
+                                "join p.postCategory pc on pc.name = :categoryName " +
+                                "order by p.postDate desc ", Post.class)
+                .setParameter("categoryName", postCategoryName)
+                .getResultList();
+    }
 }

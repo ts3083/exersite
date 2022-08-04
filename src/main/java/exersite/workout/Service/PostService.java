@@ -61,6 +61,16 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
+    public List<Post> findAllDesc() {
+        return postRepository.findAllDescPostdate();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> findAllDesc(String CategoryName) {
+        return postRepository.findAllDescPostdate(CategoryName);
+    }
+
+    @Transactional(readOnly = true)
     public List<Post> findPosts(PostSearch postSearch) {
         List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
         if (postSearch.getTitleOrContent() == null
