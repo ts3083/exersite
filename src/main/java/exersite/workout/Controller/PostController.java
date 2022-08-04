@@ -1,9 +1,7 @@
 package exersite.workout.Controller;
 
-import exersite.workout.Domain.Member;
-import exersite.workout.Domain.Post;
-import exersite.workout.Domain.PostCategory;
-import exersite.workout.Domain.PostSearch;
+import exersite.workout.Domain.*;
+import exersite.workout.Repository.CommentRepository;
 import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.PostRepository;
 import exersite.workout.Repository.post.simplequery.PostDto;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -30,6 +27,7 @@ public class PostController {
     private final PostCategoryRepository postCategoryRepository;
     private final PostService postService;
     private final PostSearchQueryRepository postSearchQueryRepository;
+    private final CommentRepository commentRepository;
 
     @GetMapping("/posts/freeCategory")
     public String freeCategoryPosts(Model model) {
@@ -93,10 +91,24 @@ public class PostController {
 
     @GetMapping("/posts/{postId}/detail")
     public String detailPost(@PathVariable("postId") Long postId, Model model) {
-        postService.updateViewsByClickPost(postId); // 조회수 증가
+        // 상세보기 클릭
+        // 조회수 증가
+        postService.updateViewsByClickPost(postId);
+
+        // 해당 게시글의 post를 dto로 변환하여 html에 전달
         Post post = postService.findOne(postId);
         PostDto postDto = new PostDto(post);
+
+        // 해당 게시글에 달린 댓글 리스트 dto로 변환하여 html에 전달
+        List<Comment> comments = commentRepository.findAllByPost(postId);
+        List<CommentDto> commentDtos = comments.stream()
+                .map(comment -> new CommentDto(comment))
+                .collect(Collectors.toList());
+
+        // 댓글 작성 시 값을 전달받을 commentForm 객체 전달
+        model.addAttribute("commentForm", new CommentForm(postId));
         model.addAttribute("postDto", postDto);
+        model.addAttribute("commentDtos", commentDtos);
         return "posts/detailInformation";
     }
 

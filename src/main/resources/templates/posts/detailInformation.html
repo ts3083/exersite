@@ -1,6 +1,10 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--<head>-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+<!--</head>-->
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
@@ -59,5 +63,51 @@
     <br/>
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
+
+<hr>
+<hr>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>작성자</th>
+            <th>내용</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="commentDto : ${commentDtos}">
+            <td th:text="${commentDto?.id}"></td>
+            <td th:text="${commentDto?.nickname}"></td>
+            <td th:text="${commentDto?.content}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<form action="/comments/new" th:object="${commentForm}" style="text-align: center"
+      method="post">
+    <div class="comment-form" style="display: inline-block">
+        <label th:for="content">댓글 작성란</label>
+        <input type="text" th:field="*{content}" class="comment-control" id="input_text"
+               placeholder="댓글을 입력하세요" style="width:250px;height:150px;">
+        <button disabled="disabled" id="commentBtn" type="submit" class="btn btn-primary">작성</button>
+    </div>
+</form>
 </body>
+<script>
+    $(document).ready(function () {
+        $('#input_text').on('input change', function () {
+            if ($(this).val() != '') {
+                $('#commentBtn').prop('disabled', false);
+            }
+            else {
+                $('#commentBtn').prop('disabled', true);
+            }
+        });
+    });
+</script>
 </html>
