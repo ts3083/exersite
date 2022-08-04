@@ -54,6 +54,13 @@ public class PostService {
         post.setPostDate(LocalDateTime.now());
     }
 
+    // 조회수 증가
+    public void updateViewsByClickPost(Long postId) {
+        Post post = postRepository.findOne(postId);
+        //post.setViews(post.getViews() + 1);
+        post.clickPost();
+    }
+
     // 게시글 조회
     @Transactional(readOnly = true)
     public Post findOne(Long postId) {

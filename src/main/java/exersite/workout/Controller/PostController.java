@@ -91,6 +91,7 @@ public class PostController {
 
     @GetMapping("/posts/{postId}/detail")
     public String detailPost(@PathVariable("postId") Long postId, Model model) {
+        postService.updateViewsByClickPost(postId); // 조회수 증가
         Post post = postService.findOne(postId);
         PostDto postDto = new PostDto(post);
         model.addAttribute("postDto", postDto);

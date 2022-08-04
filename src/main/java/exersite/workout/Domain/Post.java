@@ -65,14 +65,14 @@ public class Post {
 
     // 비즈니스 로직
     public void clickLike() { // 좋아요 증가
-        this.likes++;
+        this.likes += 1;
     }
 
     public void cancelLike() { // 좋아요 취소
-        this.likes--;
+        this.likes -= 1;
     }
 
     public void clickPost() { // 조회수 증가
-        this.views++;
+        this.views += 1;
     }
 }
