@@ -105,8 +105,11 @@ public class PostController {
                 .map(comment -> new CommentDto(comment))
                 .collect(Collectors.toList());
 
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+
         // 댓글 작성 시 값을 전달받을 commentForm 객체 전달
-        model.addAttribute("commentForm", new CommentForm(postId));
+        model.addAttribute("commentForm", new CommentForm());
         model.addAttribute("postDto", postDto);
         model.addAttribute("commentDtos", commentDtos);
         return "posts/detailInformation";

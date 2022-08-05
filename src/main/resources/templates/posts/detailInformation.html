@@ -61,7 +61,6 @@
         </div>
     </form>
     <br/>
-    <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
 
 <hr>
@@ -88,9 +87,18 @@
 
 <hr>
 
-<form action="/comments/new" th:object="${commentForm}" style="text-align: center"
+<form th:href="'javascript:de('+${postDto.id}+')'" th:object="${commentForm}" style="text-align: center"
       method="post">
     <div class="comment-form" style="display: inline-block">
+        <div class="form-group">
+            <label for="member">작성 회원</label>
+            <select name="memberStringId" id="member" class="form-control">
+                <option value="">회원선택</option>
+                <option th:each="member : ${members}"
+                        th:value="${member.id}"
+                        th:text="${member.nickname}" />
+            </select>
+        </div>
         <label th:for="content">댓글 작성란</label>
         <input type="text" th:field="*{content}" class="comment-control" id="input_text"
                placeholder="댓글을 입력하세요" style="width:250px;height:150px;">
@@ -109,5 +117,13 @@
             }
         });
     });
+    function de(id) {
+        const form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/posts/" + id + "/detail");
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
+<div th:replace="fragments/footer :: footer" />
 </html>

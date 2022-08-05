@@ -49,7 +49,7 @@ public class CommentRepository {
     // 특정 게시물에 작성된 모든 댓글 조회(jpql)
     public List<Comment> findAllByPost(Long postId) {
         return em.createQuery("select c from Comment c join c.post p " +
-                        "on p.id = :Id order by c.commentDate desc ", Comment.class)
+                        "on p.id = :Id order by c.commentDate asc ", Comment.class)
                 .setParameter("Id", postId)
                 .getResultList();
     }
