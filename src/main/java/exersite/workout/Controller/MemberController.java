@@ -24,7 +24,7 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
     // 로그인 화면으로 이동
-    @GetMapping("/members/login")
+    @GetMapping("/loginForm")
     public String loginForm() {
         return "members/login";
     }

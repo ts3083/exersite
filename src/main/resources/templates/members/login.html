@@ -11,7 +11,7 @@
     <div th:if="${param.logout}" class="alert alert-primary" role="alert">
         You have been logged out.
     </div>
-    <form th:action="@{/members/login}" method="post">
+    <form th:action="@{/login}" method="post">
         <img class="mb-4" src="https://getbootstrap.com/docs/5.2/assets/brand/bootstrap-logo.svg"
              alt="" width="72" height="57">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
@@ -34,6 +34,7 @@
 <!--        </div>-->
         <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
     </form>
+    <a href="/members/new">회원가입을 아직 하지 않으셨나요?</a>
 <div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
