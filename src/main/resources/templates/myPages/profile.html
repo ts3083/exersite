@@ -1,47 +1,82 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
-<style>
-    .fieldError {
-        border-color: #bd2130;
-    }
-</style>
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <form role="form" th:object="${memberDto}">
-        <div class="form-group">
-            <label th:for="loginId">로그인 아이디(이메일 형식)</label>
-            <input type="email" th:field="*{id}" class="form-control" readonly>
-
-        </div>
-        <div class="form-group">
-            <label th:for="city">도시</label>
-            <input type="text" th:field="*{city}" class="form-control" readonly>
-
-        </div>
-        <div class="form-group">
-            <label th:for="street">거리</label>
-            <input type="text" th:field="*{street}" class="form-control" readonly>
-
-        </div>
-        <div class="form-group">
-            <label th:for="zipcode">우편번호</label>
-            <input type="text" th:field="*{zipcode}" class="form-control" readonly>
-
-        </div>
-        <div class="form-group">
-            <label th:for="name">이름</label>
-            <input type="text" th:field="*{name}" class="form-control" readonly>
-
-        </div>
-        <div class="form-group">
-            <label th:for="nickname">활동명</label>
-            <input type="text" th:field="*{nickname}" class="form-control" readonly>
-
-        </div>
-    </form>
     <br/>
+    <div class="row g-5">
+        <div class="col-md-5 col-lg-4 order-md-last">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-primary">내 활동</span>
+            </h4>
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                        <a class="dropdown-item rounded-2" href="#">내가 작성한 게시글</a>
+                    </div>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                        <a class="dropdown-item rounded-2" href="#">내가 작성한 댓글</a>
+                    </div>
+                </li>
+            </ul>
+
+<!--            <form class="card p-2">-->
+<!--                <div class="input-group">-->
+<!--                    <input type="text" class="form-control" placeholder="Promo code">-->
+<!--                    <button type="submit" class="btn btn-secondary">Redeem</button>-->
+<!--                </div>-->
+<!--            </form>-->
+        </div>
+        <div class="col-md-7 col-lg-8">
+            <h4 class="mb-3">내 정보</h4>
+            <form class="needs-validation" novalidate th:object="${memberDto}">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label for="name" class="form-label">이름</label>
+                        <input type="email" th:field="*{name}" class="form-control" id="name" readonly>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="nickname" class="form-label">활동명</label>
+                        <input type="text" th:field="*{nickname}" class="form-control" id="nickname" readonly>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="loginId" class="form-label">로그인 아이디(이메일)</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text">@</span>
+                            <input type="text" th:field="*{loginId}" class="form-control" id="loginId" readonly>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="city" class="form-label">도시</label>
+                        <input type="text" th:field="*{city}" class="form-control" id="city" readonly>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="street" class="form-label">도로명</label>
+                        <input type="text" th:field="*{street}" class="form-control" id="street" readonly>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="zipcode" class="form-label">우편번호</label>
+                        <input type="text" th:field="*{zipcode}" class="form-control" id="zipcode" readonly>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <p>
+                    <a href="#" class="btn btn-primary my-2">내 정보 수정</a>
+                    <a href="#" class="btn btn-secondary my-2">비밀번호 변경</a>
+                </p>
+            </form>
+        </div>
+    </div>
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
 </body>

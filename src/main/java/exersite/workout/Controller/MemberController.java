@@ -74,6 +74,7 @@ public class MemberController {
     @Data
     static class MemberDto {
         private Long id;
+        private String loginId;
         private String name;
         private String nickname;
         private String city;
@@ -91,6 +92,7 @@ public class MemberController {
 
         public MemberDto(PrincipalDetails principalDetails) {
             this.id = principalDetails.getId();
+            this.loginId = principalDetails.getUsername();
             this.name = principalDetails.getName();
             this.nickname = principalDetails.getNickname();
             this.city = principalDetails.getCity();
