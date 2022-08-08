@@ -1,10 +1,12 @@
 package exersite.workout.Controller;
 
+import exersite.workout.Config.PrincipalDetails;
 import exersite.workout.Domain.Address;
 import exersite.workout.Domain.Member;
 import exersite.workout.Service.MemberService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +35,14 @@ public class MemberController {
     public String createMemberForm(Model model) {
         model.addAttribute("memberForm", new MemberForm());
         return "members/createMemberForm";
+    }
+
+    @GetMapping("/myPage")
+    public String myPage(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                         Model model) {
+        MemberDto memberDto = new MemberDto(principalDetails);
+        model.addAttribute("memberDto", memberDto);
+        return "myPages/profile";
     }
 
     @PostMapping("/members/new")
@@ -77,6 +87,15 @@ public class MemberController {
             this.city = member.getAddress().getCity();
             this.street = member.getAddress().getStreet();
             this.zipcode = member.getAddress().getZipcode();
+        }
+
+        public MemberDto(PrincipalDetails principalDetails) {
+            this.id = principalDetails.getId();
+            this.name = principalDetails.getName();
+            this.nickname = principalDetails.getNickname();
+            this.city = principalDetails.getCity();
+            this.street = principalDetails.getStreet();
+            this.zipcode = principalDetails.getZipcode();
         }
     }
 }

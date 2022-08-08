@@ -45,6 +45,26 @@ public class PrincipalDetails implements UserDetails {
         return member.getNickname();
     }
 
+    public Long getId() {
+        return member.getId();
+    }
+
+    public String getName() {
+        return member.getName();
+    }
+
+    public String getCity() {
+        return member.getAddress().getCity();
+    }
+
+    public String getStreet() {
+        return member.getAddress().getStreet();
+    }
+
+    public String getZipcode() {
+        return member.getAddress().getZipcode();
+    }
+
     // 계정이 만료되었는가
     @Override
     public boolean isAccountNonExpired() {
