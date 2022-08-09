@@ -25,8 +25,8 @@ public class MemberService {
 
     // 중복 회원 검사 메서드
     private void validateDuplicateMember(Member member) {
-        Member findMember = memberRepository.findByLoginId(member.getLoginId());
-        if (findMember != null) { // 이미 같은 로그인아이디를 갖는 회원이라면 중복회원 처리
+        List<Member> members = memberRepository.findMembersByLoginId(member.getLoginId());
+        if (!members.isEmpty()) { // 이미 같은 로그인아이디를 갖는 회원이라면 중복회원 처리
             throw new IllegalStateException("이미 존재하는 회원입니다");
         }
     }

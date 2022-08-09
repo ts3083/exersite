@@ -1,4 +1,4 @@
-package exersite.workout.Controller;
+package exersite.workout.Controller.Forms;
 
 import lombok.Getter;
 import lombok.Setter;

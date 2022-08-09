@@ -1,6 +1,7 @@
 package exersite.workout.Controller;
 
 import exersite.workout.Config.PrincipalDetails;
+import exersite.workout.Controller.Forms.MemberForm;
 import exersite.workout.Domain.Address;
 import exersite.workout.Domain.Member;
 import exersite.workout.Service.MemberService;

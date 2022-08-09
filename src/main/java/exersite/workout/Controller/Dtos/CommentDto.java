@@ -1,4 +1,4 @@
-package exersite.workout.Controller;
+package exersite.workout.Controller.Dtos;
 
 import exersite.workout.Domain.Comment;
 import lombok.Data;

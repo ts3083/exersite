@@ -1,15 +1,20 @@
 package exersite.workout.Controller;
 
+import exersite.workout.Config.PrincipalDetails;
+import exersite.workout.Controller.Dtos.CommentDto;
+import exersite.workout.Controller.Dtos.PostDetailDto;
+import exersite.workout.Controller.Dtos.PostUpdateDto;
+import exersite.workout.Controller.Forms.CommentForm;
+import exersite.workout.Controller.Forms.PostForm;
 import exersite.workout.Domain.*;
 import exersite.workout.Repository.CommentRepository;
 import exersite.workout.Repository.PostCategoryRepository;
-import exersite.workout.Repository.PostRepository;
 import exersite.workout.Repository.post.simplequery.PostDto;
 import exersite.workout.Repository.post.simplequery.PostSearchQueryRepository;
 import exersite.workout.Service.MemberService;
 import exersite.workout.Service.PostService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,28 +60,24 @@ public class PostController {
 
     @GetMapping("/posts/createPost")
     public String creatPost(Model model) {
-        List<Member> members = memberService.findMembers();
         List<PostCategory> postCategories = postCategoryRepository.findAll();
 
-        model.addAttribute("members", members);
         model.addAttribute("postCategories", postCategories);
         model.addAttribute("postForm", new PostForm());
         return "posts/createPostForm";
     }
 
     @PostMapping("/posts/createPost")
-    public String post(@RequestParam("memberStringId") String memberStringId,
+    public String post(@AuthenticationPrincipal PrincipalDetails details,
                        @RequestParam("postCategoryName") String postCategoryName,
                        @Valid PostForm postForm, BindingResult result) {
-        if (memberStringId.equals("") || postCategoryName.equals("") || result.hasErrors()) {
+        if (postCategoryName.equals("") || result.hasErrors()) {
             // 에러가 있으면 다시 게시글 작성 창으로
             return "posts/createPostForm";
         }
-        Long memberId = Long.parseLong(memberStringId);
-
-        postService.savePost(memberId, postCategoryName,
+        postService.savePost(details.getId(), postCategoryName,
                 postForm.getTitle(), postForm.getContent());
-        return "redirect:/";
+        return "boardHome";
     }
 
     @GetMapping("/posts/search") // 검색할 때는 어떤 경우든지 get매핑
@@ -97,16 +98,13 @@ public class PostController {
 
         // 해당 게시글의 post를 dto로 변환하여 html에 전달
         Post post = postService.findOne(postId);
-        PostDto postDto = new PostDto(post);
+        PostDetailDto postDto = new PostDetailDto(post);
 
         // 해당 게시글에 달린 댓글 리스트 dto로 변환하여 html에 전달
         List<Comment> comments = commentRepository.findAllByPost(postId);
         List<CommentDto> commentDtos = comments.stream()
                 .map(comment -> new CommentDto(comment))
                 .collect(Collectors.toList());
-
-        List<Member> members = memberService.findMembers();
-        model.addAttribute("members", members);
 
         // 댓글 작성 시 값을 전달받을 commentForm 객체 전달
         model.addAttribute("commentForm", new CommentForm());
@@ -119,8 +117,9 @@ public class PostController {
     @GetMapping("/posts/{id}/edit")
     public String updatePostForm(@PathVariable("id") Long postId, Model model) {
         Post post = postService.findOne(postId);
-        PostUpdateDto postUpdateDto = new PostUpdateDto(postId);
         model.addAttribute("postDto", new PostDto(post));
+
+        PostUpdateDto postUpdateDto = new PostUpdateDto(postId);
         model.addAttribute("postUpdateForm", postUpdateDto);
         return "posts/updatePostForm";
     }
@@ -129,24 +128,13 @@ public class PostController {
     public String updatePost(@Valid PostUpdateDto postUpdateDto) {
         postService.updateTitleContent(postUpdateDto.getId(),
                 postUpdateDto.getTitle(), postUpdateDto.getContent());
-        return "redirect:/";
-    }
-
-    @Data
-    static class PostUpdateDto {
-        private Long id;
-        private String title;
-        private String content;
-
-        public PostUpdateDto(Long id) {
-            this.id = id;
-        }
+        return "boardHome";
     }
 
     // 게시글 삭제
     @PostMapping("/posts/{id}/delete")
     public String deletePost(@PathVariable("id") Long postId) {
         postService.deletePost(postId);
-        return "redirect:/";
+        return "boardHome";
     }
 }

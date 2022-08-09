@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CommentService {
 
@@ -20,6 +20,7 @@ public class CommentService {
     private final PostRepository postRepository;
 
     // 댓글 저장
+    @Transactional
     public Long saveComment(Long memberId, Long postId, String content) {
         // 회원 찾기
         Member member = memberRepository.findOne(memberId);
@@ -36,19 +37,20 @@ public class CommentService {
     }
 
     // 댓글 삭제
+    @Transactional
     public void deleteComment(Long commentId) {
         Comment findComment = commentRepository.findOne(commentId);
         commentRepository.remove(findComment);
     }
 
     // 댓글 수정
+    @Transactional
     public void updateComment(Long commentId, String newContent) {
         Comment comment = commentRepository.findOne(commentId);
         comment.setContent(newContent);
     }
 
     // Comment id로 조회
-    @Transactional(readOnly = true)
     public Comment findOne(Long commentId) {
         return commentRepository.findOne(commentId);
     }
