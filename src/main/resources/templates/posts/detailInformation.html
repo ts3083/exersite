@@ -86,7 +86,7 @@
             <td th:text="${commentDto?.likes}"></td>
             <td>
                 <a th:if="${user.getUsername().equals(commentDto.getCommentUserLoginId())}"
-                   th:href="@{/comments/{id}/delete (id=${commentDto.id})}"
+                   th:href="@{/comments/{id}/update (id=${commentDto.id})}"
                    class="btn btn-primary" role="button">수정</a>
             </td>
             <td>
