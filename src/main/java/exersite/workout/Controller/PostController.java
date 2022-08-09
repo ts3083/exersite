@@ -91,7 +91,9 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}/detail")
-    public String detailPost(@PathVariable("postId") Long postId, Model model) {
+    public String detailPost(@PathVariable("postId") Long postId,
+                             @AuthenticationPrincipal PrincipalDetails details,
+                             Model model) {
         // 상세보기 클릭
         // 조회수 증가
         postService.updateViewsByClickPost(postId);
@@ -107,6 +109,7 @@ public class PostController {
                 .collect(Collectors.toList());
 
         // 댓글 작성 시 값을 전달받을 commentForm 객체 전달
+        model.addAttribute("user", details);
         model.addAttribute("commentForm", new CommentForm());
         model.addAttribute("postDto", postDto);
         model.addAttribute("commentDtos", commentDtos);

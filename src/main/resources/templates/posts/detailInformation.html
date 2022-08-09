@@ -48,14 +48,14 @@
         <br/>
         <div class="row">
             <div class="col">
-                <a href="#" th:if="${#authorization.authentication.name.equals(postDto.getMemberLoginId())}"
+                <a href="#" th:if="${user.getUsername().equals(postDto.getMemberLoginId())}"
                    th:href="@{/posts/{id}/edit (id=${postId})}"
                    class="btn btn-primary" role="button">수정</a>
             </div>
         </div>
     </form>
     <form role="form" th:object="${postDto}"
-          th:if="${#authorization.authentication.name.equals(postDto.getMemberLoginId())}"
+          th:if="${user.getUsername().equals(postDto.getMemberLoginId())}"
           th:action="@{/posts/{id}/delete (id=${postId})}"
           method="post">
         <div class="col">
@@ -83,6 +83,20 @@
             <td th:text="${commentDto?.id}"></td>
             <td th:text="${commentDto?.nickname}"></td>
             <td th:text="${commentDto?.content}"></td>
+            <td th:text="${commentDto?.likes}"></td>
+            <td>
+                <a th:if="${user.getUsername().equals(commentDto.getCommentUserLoginId())}"
+                   th:href="@{/comments/{id}/delete (id=${commentDto.id})}"
+                   class="btn btn-primary" role="button">수정</a>
+            </td>
+            <td>
+                <form role="form"
+                      th:if="${user.getUsername().equals(commentDto.getCommentUserLoginId())}"
+                      th:action="@{/comments/{id}/delete (id=${commentDto.id})}" method="post">
+                    <input type="hidden" value="delete"/>
+                    <button id="delete-comment" class="btn btn-primary">삭제</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
