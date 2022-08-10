@@ -31,8 +31,7 @@
                 <td th:text="${myPostsDto.likes}"></td>
                 <td th:text="${myPostsDto.postDate}"></td>
                 <td>
-                    <a href="#"
-                       th:href="'javascript:deta('+${myPostsDto.id}+')'"
+                    <a th:href="@{/posts/{id}/detail (id=${myPostsDto.id})}"
                        class="btn-light">상세보기</a>
                 </td>
             </tr>
@@ -42,13 +41,4 @@
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
 </body>
-<script>
-    function deta(id) {
-        const form = document.createElement("form");
-        form.setAttribute("method", "get");
-        form.setAttribute("action", "/posts/" + id + "/detail");
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script>
 </html>
