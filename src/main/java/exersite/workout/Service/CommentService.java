@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -53,5 +55,10 @@ public class CommentService {
     // Comment id로 조회
     public Comment findOne(Long commentId) {
         return commentRepository.findOne(commentId);
+    }
+
+    // 특정 회원이 작성한 모든 댓글 조회
+    public List<Comment> findAllByUser(Long memberId) {
+        return commentRepository.findAllByMember(memberId);
     }
 }
