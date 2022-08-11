@@ -13,4 +13,9 @@ public class HomeController {
         log.info("home controller");
         return "home";
     }
+
+    @RequestMapping("/boardHome")
+    public String boardHome() {
+        return "boardHome";
+    }
 }

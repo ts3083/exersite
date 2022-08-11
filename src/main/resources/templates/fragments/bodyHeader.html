@@ -1,8 +1,45 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div class="header" th:fragment="bodyHeader">
-    <ul class="nav nav-pills pull-right">
-        <li><a href="/">Home</a></li>
-    </ul>
-    <a href="/"><h3 class="text-muted">Title</h3></a>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a href="/" class="navbar-brand">Title</a>
+            <button class="navbar-toggle" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggle-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="#">Link</a>-->
+<!--                    </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/boardHome">게시판</a>
+                    </li>
+                </ul>
+<!--                <form class="d-flex" role="search">-->
+<!--                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--                    <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--                </form>-->
+                <a class="btn btn-secondary mx-2 my-2 my-sm-0" th:href="@{/loginForm}"
+                   sec:authorize="!isAuthenticated()">로그인</a>
+                <a class="btn btn-secondary my-2 my-sm-0" th:href="@{/members/new}"
+                   sec:authorize="!isAuthenticated()">회원가입</a>
+                <form class="form-check-inline my-2 my-lg-0" th:action="@{/logout}" method="post"
+                      sec:authorize="isAuthenticated()">
+                    <span class="text-white">안녕하세요</span>
+                    <span class="text-white mx-2" sec:authentication="name">사용자 님</span>
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">로그아웃</button>
+                </form>
+                <a href="/myPage" class="d-block link-dark text-decoration-none" aria-expanded="false">
+                    <img src="/images/profile.png" sec:authorize="isAuthenticated()"
+                         alt="mdo" width="32" height="32" class="rounded-circle">
+                </a>
+            </div>
+        </div>
+    </nav>
 </div>

@@ -1,4 +1,4 @@
-package exersite.workout.Controller;
+package exersite.workout.Controller.Forms;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,10 +6,9 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 
 @Getter @Setter
-public class PostForm {
+public class CommentForm {
 
-    @NotEmpty(message = "필수 사항")
-    private String title;
+    private String nickname;
     @NotEmpty(message = "필수 사항")
     private String content;
 }

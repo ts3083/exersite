@@ -77,6 +77,12 @@ public class PostService {
         return postRepository.findAllDescPostdate(CategoryName);
     }
 
+    // 특정 회원이 작성한 모든 게시글 조회 메서드
+    @Transactional(readOnly = true)
+    public List<Post> findAllByUser(Long memberId) {
+        return postRepository.findAllByMember(memberId);
+    }
+
     @Transactional(readOnly = true)
     public List<Post> findPosts(PostSearch postSearch) {
         List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();

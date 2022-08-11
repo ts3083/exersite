@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div class="py-5 text-center">
+        <h2>내가 작성한 댓글</h2>
+    </div>
+
+    <hr class="my-4">
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>댓글 id</th>
+                <th>작성한 게시글 제목</th>
+                <th>작성자</th>
+                <th>내용</th>
+                <th>공감수</th>
+                <th>등록일</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="myCommentsDto : ${myCommentsDtos}">
+                <td th:text="${myCommentsDto.commentId}"></td>
+                <td th:text="${myCommentsDto.postTitle}"></td>
+                <td th:text="${userNickname}"></td>
+                <td th:text="${myCommentsDto.content}"></td>
+                <td th:text="${myCommentsDto.likes}"></td>
+                <td th:text="${myCommentsDto.commentDate}"></td>
+                <td>
+                    <a th:href="@{/posts/{id}/detail (id=${myCommentsDto.postId})}"
+                       class="btn-light">상세보기</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>

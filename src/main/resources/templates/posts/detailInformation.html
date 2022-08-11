@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/header :: header" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <!--<head>-->
@@ -11,8 +11,8 @@
     <form role="form" th:object="${postDto}">
         <div class="form-group">
             <label th:for="postId">글 ID</label>
-            <input type="text" th:field="*{id}" class="form-control"
-                   th:value="${postDto.id}" readonly>
+            <input type="text" th:field="*{postId}" class="form-control"
+                   th:value="${postDto.postId}" readonly>
         </div>
         <div class="form-group">
             <label th:for="nickname">작성자</label>
@@ -48,12 +48,15 @@
         <br/>
         <div class="row">
             <div class="col">
-                <a href="#" th:href="@{/posts/{id}/edit (id=${postId})}"
+                <a href="#" th:if="${user.getUsername().equals(postDto.getMemberLoginId())}"
+                   th:href="@{/posts/{id}/edit (id=${postId})}"
                    class="btn btn-primary" role="button">수정</a>
             </div>
         </div>
     </form>
-    <form role="form" th:object="${postDto}" th:action="@{/posts/{id}/delete (id=${postId})}"
+    <form role="form" th:object="${postDto}"
+          th:if="${user.getUsername().equals(postDto.getMemberLoginId())}"
+          th:action="@{/posts/{id}/delete (id=${postId})}"
           method="post">
         <div class="col">
             <input type="hidden" value="delete"/>
@@ -73,6 +76,7 @@
             <th>id</th>
             <th>작성자</th>
             <th>내용</th>
+            <th>공감수</th>
         </tr>
         </thead>
         <tbody>
@@ -80,50 +84,37 @@
             <td th:text="${commentDto?.id}"></td>
             <td th:text="${commentDto?.nickname}"></td>
             <td th:text="${commentDto?.content}"></td>
+            <td th:text="${commentDto?.likes}"></td>
+            <td>
+                <a th:if="${user.getUsername().equals(commentDto.getCommentUserLoginId())}"
+                   th:href="@{/comments/{id}/update (id=${commentDto.id})}"
+                   class="btn btn-primary" role="button">수정</a>
+            </td>
+            <td>
+                <form role="form"
+                      th:if="${user.getUsername().equals(commentDto.getCommentUserLoginId())}"
+                      th:action="@{/comments/{id}/delete (id=${commentDto.id})}" method="post">
+                    <input type="hidden" value="delete"/>
+                    <button id="delete-comment" class="btn btn-primary">삭제</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
 
 <hr>
-
-<form th:href="'javascript:de('+${postDto.id}+')'" th:object="${commentForm}" style="text-align: center"
-      method="post">
-    <div class="comment-form" style="display: inline-block">
-        <div class="form-group">
-            <label for="member">작성 회원</label>
-            <select name="memberStringId" id="member" class="form-control">
-                <option value="">회원선택</option>
-                <option th:each="member : ${members}"
-                        th:value="${member.id}"
-                        th:text="${member.nickname}" />
-            </select>
-        </div>
-        <label th:for="content">댓글 작성란</label>
-        <input type="text" th:field="*{content}" class="comment-control" id="input_text"
-               placeholder="댓글을 입력하세요" style="width:250px;height:150px;">
-        <button disabled="disabled" id="commentBtn" type="submit" class="btn btn-primary">작성</button>
+<form role="form" th:object="${commentForm}" th:action="@{/posts/{id}/createComment (id=${postId})}"
+      style="text-align: center" method="post">
+    <div class="col" style="display: inline-block">
+        <input type="text" class="comment-control" id="input_text" th:value="${commentForm.content}"
+               th:field="*{content}" placeholder="댓글을 입력하세요" style="width:250px;height:150px;"
+               th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"/>
+        <button id="commentBtn" class="btn btn-primary">작성</button>
+        <p th:if="${#fields.hasErrors('content')}"
+           th:errors="*{content}">Incorrect date</p>
     </div>
 </form>
 </body>
-<script>
-    $(document).ready(function () {
-        $('#input_text').on('input change', function () {
-            if ($(this).val() != '') {
-                $('#commentBtn').prop('disabled', false);
-            }
-            else {
-                $('#commentBtn').prop('disabled', true);
-            }
-        });
-    });
-    function de(id) {
-        const form = document.createElement("form");
-        form.setAttribute("method", "post");
-        form.setAttribute("action", "/posts/" + id + "/detail");
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script>
 <div th:replace="fragments/footer :: footer" />
 </html>

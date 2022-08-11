@@ -4,7 +4,7 @@
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <form role="form" th:object="${postDto}"  action="/posts/updatePostForm"
+    <form role="form" th:object="${postDto}"  th:action="@{/posts/updatePostForm}"
           method="post">
         <div class="form-group">
             <label th:for="postId">글 ID</label>

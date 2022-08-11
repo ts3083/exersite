@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <form role="form" th:action="@{/comments/{id}/update (id=${commentId})}"
+          style="text-align: center" method="post">
+        <div class="col" style="display: inline-block">
+            <input type="text" th:value="${updateCommentDto.content}" th:field="${updateCommentDto.content}"
+                   placeholder="댓글을 입력하세요" style="width:250px;height:150px;"/>
+            <button id="commentBtn" class="btn btn-primary">작성</button>
+        </div>
+    </form>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>
