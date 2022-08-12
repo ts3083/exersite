@@ -7,6 +7,9 @@ import exersite.workout.Controller.Dtos.PostUpdateDto;
 import exersite.workout.Controller.Forms.CommentForm;
 import exersite.workout.Controller.Forms.PostForm;
 import exersite.workout.Domain.*;
+import exersite.workout.Domain.Post.Post;
+import exersite.workout.Domain.Post.PostCategory;
+import exersite.workout.Domain.Post.PostSearch;
 import exersite.workout.Repository.CommentRepository;
 import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.post.simplequery.PostDto;
@@ -81,7 +84,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/search") // 검색할 때는 어떤 경우든지 get매핑
-    public String postList(@ModelAttribute("postSearch")PostSearch postSearch
+    public String postList(@ModelAttribute("postSearch") PostSearch postSearch
             , Model model) {
         // 주의 : 처음 넘겼을 때, postSearch의 필드들은 null로 설정됨
         // 검색 버튼을 누르면 : 아무것도 입력하지 않으면 ""으로 넘어옴(구분 필수)

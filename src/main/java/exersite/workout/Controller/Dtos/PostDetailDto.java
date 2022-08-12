@@ -1,6 +1,6 @@
 package exersite.workout.Controller.Dtos;
 
-import exersite.workout.Domain.Post;
+import exersite.workout.Domain.Post.Post;
 import lombok.Data;
 
 import java.time.LocalDateTime;

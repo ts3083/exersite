@@ -5,7 +5,7 @@ import exersite.workout.Controller.Dtos.MemberDto;
 import exersite.workout.Controller.Dtos.myCommentsDto;
 import exersite.workout.Controller.Dtos.myPostsDto;
 import exersite.workout.Domain.Comment;
-import exersite.workout.Domain.Post;
+import exersite.workout.Domain.Post.Post;
 import exersite.workout.Service.CommentService;
 import exersite.workout.Service.PostService;
 import lombok.RequiredArgsConstructor;

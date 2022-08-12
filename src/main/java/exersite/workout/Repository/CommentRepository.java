@@ -1,8 +1,8 @@
 package exersite.workout.Repository;
 
 import exersite.workout.Domain.Comment;
-import exersite.workout.Domain.Member;
-import exersite.workout.Domain.Post;
+import exersite.workout.Domain.Member.Member;
+import exersite.workout.Domain.Post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Repository;

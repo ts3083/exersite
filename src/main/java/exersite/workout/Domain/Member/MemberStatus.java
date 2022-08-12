@@ -1,4 +1,4 @@
-package exersite.workout.Domain;
+package exersite.workout.Domain.Member;
 
 public enum MemberStatus {
     MEMBER, DELETED

@@ -1,5 +1,7 @@
-package exersite.workout.Domain;
+package exersite.workout.Domain.Member;
 
+import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Post.Post;
 import lombok.Getter;
 import lombok.Setter;
 

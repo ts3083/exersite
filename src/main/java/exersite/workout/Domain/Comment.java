@@ -1,10 +1,15 @@
 package exersite.workout.Domain;
 
+import exersite.workout.Domain.Member.Member;
+import exersite.workout.Domain.Post.Post;
+import exersite.workout.Domain.likes.CommentLikes;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -22,9 +27,11 @@ public class Comment {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    Set<CommentLikes> likes = new HashSet<>();
+
     private LocalDateTime commentDate;
     private String content;
-    private int likes;
 
     // 연관관계 메서드
     public void setMember(Member member) {
@@ -52,17 +59,7 @@ public class Comment {
         comment.setMember(member);
         comment.setPost(post);
         comment.setContent(content);
-        comment.setLikes(0);
         comment.setCommentDate(LocalDateTime.now());
         return comment;
-    }
-
-    // 비즈니스 로직
-    public void clickLike() { // 좋아요 증가
-        this.likes++;
-    }
-
-    public void cancelLike() { // 좋아요 취소
-        this.likes--;
     }
 }

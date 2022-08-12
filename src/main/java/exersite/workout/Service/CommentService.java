@@ -1,8 +1,8 @@
 package exersite.workout.Service;
 
 import exersite.workout.Domain.Comment;
-import exersite.workout.Domain.Member;
-import exersite.workout.Domain.Post;
+import exersite.workout.Domain.Member.Member;
+import exersite.workout.Domain.Post.Post;
 import exersite.workout.Repository.CommentRepository;
 import exersite.workout.Repository.MemberRepository;
 import exersite.workout.Repository.PostRepository;

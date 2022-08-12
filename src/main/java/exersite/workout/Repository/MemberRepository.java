@@ -1,6 +1,6 @@
 package exersite.workout.Repository;
 
-import exersite.workout.Domain.Member;
+import exersite.workout.Domain.Member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

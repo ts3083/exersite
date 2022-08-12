@@ -1,9 +1,9 @@
 package exersite.workout.Service;
 
-import exersite.workout.Domain.Address;
-import exersite.workout.Domain.Member;
-import exersite.workout.Domain.Post;
-import exersite.workout.Domain.PostCategory;
+import exersite.workout.Domain.Member.Address;
+import exersite.workout.Domain.Member.Member;
+import exersite.workout.Domain.Post.Post;
+import exersite.workout.Domain.Post.PostCategory;
 import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.PostRepository;
 import org.junit.Assert;
@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 

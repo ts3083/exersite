@@ -1,13 +1,11 @@
 package exersite.workout.Controller;
 
-import exersite.workout.Config.PrincipalDetails;
 import exersite.workout.Controller.Dtos.MemberDto;
 import exersite.workout.Controller.Forms.MemberForm;
-import exersite.workout.Domain.Address;
-import exersite.workout.Domain.Member;
+import exersite.workout.Domain.Member.Address;
+import exersite.workout.Domain.Member.Member;
 import exersite.workout.Service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

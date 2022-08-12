@@ -1,12 +1,17 @@
-package exersite.workout.Domain;
+package exersite.workout.Domain.Post;
 
+import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Member.Member;
+import exersite.workout.Domain.likes.PostLikes;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -28,9 +33,11 @@ public class Post {
     @JoinColumn(name = "post_category_id")
     private PostCategory postCategory;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    Set<PostLikes> likes = new HashSet<>();
+
     private LocalDateTime postDate;
     private int views;
-    private int likes;
     private String title;
     private String content;
 
@@ -57,20 +64,12 @@ public class Post {
         post.setPostCategory(postCategory);
         post.setTitle(title);
         post.setContent(content);
-        post.setLikes(0);
         post.setViews(0);
         post.setPostDate(LocalDateTime.now());
         return post;
     }
 
     // 비즈니스 로직
-    public void clickLike() { // 좋아요 증가
-        this.likes += 1;
-    }
-
-    public void cancelLike() { // 좋아요 취소
-        this.likes -= 1;
-    }
 
     public void clickPost() { // 조회수 증가
         this.views += 1;

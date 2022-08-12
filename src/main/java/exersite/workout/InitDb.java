@@ -1,6 +1,6 @@
 package exersite.workout;
 
-import exersite.workout.Domain.PostCategory;
+import exersite.workout.Domain.Post.PostCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

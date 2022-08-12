@@ -1,9 +1,9 @@
 package exersite.workout.Service;
 
-import exersite.workout.Domain.Member;
-import exersite.workout.Domain.Post;
-import exersite.workout.Domain.PostCategory;
-import exersite.workout.Domain.PostSearch;
+import exersite.workout.Domain.Member.Member;
+import exersite.workout.Domain.Post.Post;
+import exersite.workout.Domain.Post.PostCategory;
+import exersite.workout.Domain.Post.PostSearch;
 import exersite.workout.Repository.MemberRepository;
 import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.PostRepository;

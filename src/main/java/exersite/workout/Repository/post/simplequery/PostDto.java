@@ -1,6 +1,6 @@
 package exersite.workout.Repository.post.simplequery;
 
-import exersite.workout.Domain.Post;
+import exersite.workout.Domain.Post.Post;
 import lombok.Data;
 
 import java.time.LocalDateTime;

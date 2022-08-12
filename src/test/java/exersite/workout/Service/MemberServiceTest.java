@@ -1,6 +1,6 @@
 package exersite.workout.Service;
 
-import exersite.workout.Domain.Member;
+import exersite.workout.Domain.Member.Member;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;

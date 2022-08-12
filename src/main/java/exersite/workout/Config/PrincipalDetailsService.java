@@ -1,6 +1,6 @@
 package exersite.workout.Config;
 
-import exersite.workout.Domain.Member;
+import exersite.workout.Domain.Member.Member;
 import exersite.workout.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
