@@ -23,11 +23,17 @@ public class CommentLikes {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
+    // 연관관계 메서드
+    public void setComment(Comment comment) {
+        this.comment = comment;
+        comment.getLikes().add(this);
+    }
+
     // 생성 메서드 - 생성 시 누가, 어떤 댓글에 좋아요했는지 반드시 필요
     public static CommentLikes createPostLikes(Member member, Comment comment) {
         CommentLikes commentLikes = new CommentLikes();
-        commentLikes.member = member;
-        commentLikes.comment = comment;
+        commentLikes.setMember(member);
+        commentLikes.setComment(comment);
         return commentLikes;
     }
 }

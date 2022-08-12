@@ -20,7 +20,7 @@ public class myCommentsDto {
         this.postId = comment.getPost().getId();
         this.postTitle = comment.getPost().getTitle();
         this.content = comment.getContent();
-        this.likes = comment.getLikes();
+        this.likes = comment.getLikes().size();
         this.commentDate = comment.getCommentDate();
     }
 }

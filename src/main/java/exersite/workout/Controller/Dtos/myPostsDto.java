@@ -20,7 +20,7 @@ public class myPostsDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.views = post.getViews();
-        this.likes = post.getLikes();
+        this.likes = post.getLikes().size();
         this.postDate = post.getPostDate();
     }
 }

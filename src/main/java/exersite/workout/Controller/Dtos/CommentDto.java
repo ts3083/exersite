@@ -17,6 +17,6 @@ public class CommentDto {
         this.nickname = comment.getMember().getNickname();
         this.commentUserLoginId = comment.getMember().getLoginId();
         this.content = comment.getContent();
-        this.likes = comment.getLikes();
+        this.likes = comment.getLikes().size();
     }
 }
