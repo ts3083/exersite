@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -20,10 +22,10 @@ public class PostLikesService {
     private final MemberService memberService;
 
     public void clickPostLikes(Long memberId, Long postId) {
-        PostLikes postLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
-        if(postLikes != null) {
+        Optional<PostLikes> optionPostLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
+        if(optionPostLikes.isPresent()) {
             // 이미 좋아요 누른 경우 : 좋아요 삭제
-            deletePostLikes(postLikes, postId);
+            deletePostLikes(optionPostLikes.get(), postId);
         } else {
             // 좋아요를 누르지 않은 경우
             savePostLikes(memberId, postId);

@@ -21,7 +21,7 @@ public class PostDto {
         this.content = post.getContent();
         this.nickname = post.getMember().getNickname();
         this.views = post.getViews();
-        this.likes = post.getLikes();
+        this.likes = post.getLikes().size();
         this.postDate = post.getPostDate();
     }
 

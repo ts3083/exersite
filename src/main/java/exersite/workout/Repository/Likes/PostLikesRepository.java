@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,13 +25,14 @@ public class PostLikesRepository {
         return em.find(PostLikes.class, id);
     }
 
-    public PostLikes findOneByMemberAndPost(Long memberId, Long postId) {
+    public Optional<PostLikes> findOneByMemberAndPost(Long memberId, Long postId) {
         return em.createQuery(
                 "select pl from PostLikes pl " +
                         "where pl.member.id = :memberId " +
                         "and pl.post.id = :postId", PostLikes.class)
                 .setParameter("memberId", memberId)
                 .setParameter("postId", postId)
-                .getSingleResult();
+                .getResultList()
+                .stream().findAny();
     }
 }
