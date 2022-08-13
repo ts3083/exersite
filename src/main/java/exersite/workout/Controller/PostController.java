@@ -14,6 +14,7 @@ import exersite.workout.Repository.CommentRepository;
 import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.post.simplequery.PostDto;
 import exersite.workout.Repository.post.simplequery.PostSearchQueryRepository;
+import exersite.workout.Service.Likes.PostLikesService;
 import exersite.workout.Service.MemberService;
 import exersite.workout.Service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -31,11 +33,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final MemberService memberService;
     private final PostCategoryRepository postCategoryRepository;
     private final PostService postService;
-    private final PostSearchQueryRepository postSearchQueryRepository;
     private final CommentRepository commentRepository;
+    private final PostLikesService postLikesService;
 
     @GetMapping("/posts/freeCategory")
     public String freeCategoryPosts(Model model) {
@@ -142,5 +143,14 @@ public class PostController {
     public String deletePost(@PathVariable("id") Long postId) {
         postService.deletePost(postId);
         return "boardHome";
+    }
+
+    @PostMapping("/posts/{postId}/clickPostLikes")
+    public RedirectView clickPostLikes(@AuthenticationPrincipal PrincipalDetails details,
+                                       @PathVariable("postId") Long postId) {
+
+        postLikesService.clickPostLikes(details.getId(), postId);
+
+        return new RedirectView("/posts/{postId}/detail");
     }
 }

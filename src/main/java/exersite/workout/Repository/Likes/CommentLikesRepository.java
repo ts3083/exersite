@@ -1,10 +1,8 @@
 package exersite.workout.Repository.Likes;
 
 import exersite.workout.Domain.likes.CommentLikes;
-import exersite.workout.Domain.likes.PostLikes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import java.util.Optional;
 

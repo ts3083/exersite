@@ -3,7 +3,9 @@ package exersite.workout.Controller;
 import exersite.workout.Config.PrincipalDetails;
 import exersite.workout.Controller.Dtos.CommentUpdateDto;
 import exersite.workout.Controller.Forms.CommentForm;
+import exersite.workout.Domain.Comment;
 import exersite.workout.Service.CommentService;
+import exersite.workout.Service.Likes.CommentLikesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import javax.validation.Valid;
 public class CommentController {
 
     private final CommentService commentService;
+    private final CommentLikesService commentLikesService;
 
     // 댓글 생성
     @PostMapping("/posts/{postId}/createComment")
@@ -47,16 +50,38 @@ public class CommentController {
     }
 
     @PostMapping("/comments/{id}/update")
-    public String updateComment(@PathVariable("id") Long commentId,
+    public RedirectView updateComment(@PathVariable("id") Long commentId,
                                 @Valid CommentUpdateDto commentUpdateDto) {
         commentService.updateComment(commentId, commentUpdateDto.getContent());
-        return "boardHome";
+        Comment comment = commentService.findOne(commentId);
+        Long postId = comment.getPost().getId();
+
+        String url = "/posts/" + postId + "/detail";
+        return new RedirectView(url);
     }
 
     // 댓글 삭제
     @PostMapping("/comments/{id}/delete")
-    public String deleteComment(@PathVariable("id") Long commentId) {
+    public RedirectView deleteComment(@PathVariable("id") Long commentId) {
+        Comment comment = commentService.findOne(commentId);
+        Long postId = comment.getPost().getId();
+
         commentService.deleteComment(commentId);
-        return "boardHome";
+
+        String url = "/posts/" + postId + "/detail";
+        return new RedirectView(url);
+    }
+
+    // 댓글 좋아요
+    @PostMapping("/posts/{commentId}/clickCommentLikes")
+    public RedirectView clickCommentLikes(@AuthenticationPrincipal PrincipalDetails details,
+                                          @PathVariable("commentId") Long commentId) {
+
+        commentLikesService.clickCommentLikes(details.getId(), commentId);
+        Comment comment = commentService.findOne(commentId);
+        Long postId = comment.getPost().getId();
+
+        String url = "/posts/" + postId + "/detail";
+        return new RedirectView(url);
     }
 }

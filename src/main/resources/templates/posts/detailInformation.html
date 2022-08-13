@@ -63,6 +63,12 @@
             <button id="delete-post" class="btn btn-primary">삭제</button>
         </div>
     </form>
+    <form role="form" th:action="@{/posts/{postId}/clickPostLikes (postId=${postId})}"
+          method="post">
+        <button>
+            <img src="/images/like.png" alt="like" width="32" height="32">
+        </button>
+    </form>
     <br/>
 </div> <!-- /container -->
 
@@ -96,6 +102,15 @@
                       th:action="@{/comments/{id}/delete (id=${commentDto.id})}" method="post">
                     <input type="hidden" value="delete"/>
                     <button id="delete-comment" class="btn btn-primary">삭제</button>
+                </form>
+            </td>
+            <td>
+                <form role="form"
+                      th:action="@{/posts/{commentId}/clickCommentLikes (commentId=${commentDto.id})}"
+                      method="post">
+                    <button>
+                        <img src="/images/like.png" alt="like" width="32" height="32">
+                    </button>
                 </form>
             </td>
         </tr>
