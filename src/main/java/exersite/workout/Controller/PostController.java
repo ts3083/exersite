@@ -13,9 +13,7 @@ import exersite.workout.Domain.Post.PostSearch;
 import exersite.workout.Repository.CommentRepository;
 import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.post.simplequery.PostDto;
-import exersite.workout.Repository.post.simplequery.PostSearchQueryRepository;
 import exersite.workout.Service.Likes.PostLikesService;
-import exersite.workout.Service.MemberService;
 import exersite.workout.Service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -126,8 +124,7 @@ public class PostController {
         Post post = postService.findOne(postId);
         model.addAttribute("postDto", new PostDto(post));
 
-        PostUpdateDto postUpdateDto = new PostUpdateDto(postId);
-        model.addAttribute("postUpdateForm", postUpdateDto);
+        model.addAttribute("postUpdateForm", new PostUpdateDto(postId));
         return "posts/updatePostForm";
     }
 

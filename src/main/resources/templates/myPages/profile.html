@@ -36,7 +36,7 @@
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label for="name" class="form-label">이름</label>
-                        <input type="email" th:field="*{name}" class="form-control" id="name" readonly>
+                        <input type="text" th:field="*{name}" class="form-control" id="name" readonly>
                     </div>
 
                     <div class="col-sm-6">
@@ -71,7 +71,7 @@
                 <hr class="my-4">
 
                 <p>
-                    <a href="#" class="btn btn-primary my-2">내 정보 수정</a>
+                    <a href="/myPage/editProfile" class="btn btn-primary my-2">내 정보 수정</a>
                     <a href="#" class="btn btn-secondary my-2">비밀번호 변경</a>
                 </p>
             </form>
