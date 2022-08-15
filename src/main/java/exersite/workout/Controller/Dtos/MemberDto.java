@@ -15,6 +15,8 @@ public class MemberDto {
     private String street;
     private String zipcode;
 
+    public MemberDto() {}
+
     public MemberDto(Member member) {
         this.id = member.getId();
         this.name = member.getName();

@@ -65,17 +65,17 @@ public class MypageController {
     }
 
     // 내 프로필 수정
-    @GetMapping("/myPage/editProfile")
+    @GetMapping("/editProfile")
     public String updateProfileForm(@AuthenticationPrincipal PrincipalDetails details,
                                 Model model) {
         model.addAttribute("memberDto", new MemberDto(details));
-        model.addAttribute("memberUpdateDto", new MemberUpdateDto(details.getId()));
         return "myPages/updateProfileForm";
     }
 
-    @PostMapping("/myPages/updateProfileForm")
-    public String updateProfile(@Valid MemberUpdateDto memberUpdateDto) {
-        memberService.updateMember(memberUpdateDto);
-        return "redirect:/myPages";
-    }
+//    @PostMapping("/myPages/updateProfileForm")
+//    public String updateProfile(@AuthenticationPrincipal PrincipalDetails details,
+//                                @Valid MemberDto memberDto) {
+//        memberService.updateMember(details.getId(), memberDto);
+//        return "boardHome";
+//    }
 }

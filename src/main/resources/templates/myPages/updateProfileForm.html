@@ -8,19 +8,19 @@
     <div class="row g-5">
        <div class="col-md-7 col-lg-8">
             <h4 class="mb-3">내 정보</h4>
-            <form class="needs-validation" novalidate th:object="${memberDto}"
-                  th:action="@{/myPages/updateProfileForm}" method="post">
+            <form role="form" th:object="${memberDto}" th:action="@{/myPages/updateProfileForm}"
+                  method="post">
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <label th:for="name" class="form-label">이름</label>
                         <input type="text" th:field="*{name}" class="form-control" id="name"
-                        th:value="${memberUpdateDto.name}">
+                        th:value="${memberDto.name}">
                     </div>
 
                     <div class="col-sm-6">
                         <label th:for="nickname" class="form-label">활동명</label>
                         <input type="text" th:field="*{nickname}" class="form-control" id="nickname"
-                               th:value="${memberUpdateDto.nickname}">
+                               th:value="${memberDto.nickname}">
                     </div>
 
                     <div class="col-12">
@@ -28,26 +28,26 @@
                         <div class="input-group has-validation">
                             <span class="input-group-text">@</span>
                             <input type="text" th:field="*{loginId}" class="form-control" id="loginId"
-                                   th:value="${memberUpdateDto.loginId}">
+                                   th:value="${memberDto.loginId}">
                         </div>
                     </div>
 
                     <div class="col-12">
                         <label th:for="city" class="form-label">도시</label>
                         <input type="text" th:field="*{city}" class="form-control" id="city"
-                               th:value="${memberUpdateDto.city}">
+                               th:value="${memberDto.city}">
                     </div>
 
                     <div class="col-12">
                         <label th:for="street" class="form-label">도로명</label>
                         <input type="text" th:field="*{street}" class="form-control" id="street"
-                               th:value="${memberUpdateDto.street}">
+                               th:value="${memberDto.street}">
                     </div>
 
                     <div class="col-12">
                         <label th:for="zipcode" class="form-label">우편번호</label>
                         <input type="text" th:field="*{zipcode}" class="form-control" id="zipcode"
-                               th:value="${memberUpdateDto.zipcode}">
+                               th:value="${memberDto.zipcode}">
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
-        </div>
+       </div>
     </div>
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->

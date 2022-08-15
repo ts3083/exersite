@@ -1,7 +1,5 @@
 package exersite.workout.Service;
 
-import exersite.workout.Controller.Dtos.MemberUpdateDto;
-import exersite.workout.Domain.Member.Address;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,14 +39,5 @@ public class MemberService {
     // id로 회원 조회
     public Member findOne(Long memberId) {
         return memberRepository.findOne(memberId);
-    }
-
-    // 회원 정보 업데이트
-    public void updateMember(MemberUpdateDto memberUpdateDto) {
-        Member member = memberRepository.findOne(memberUpdateDto.getId());
-        member.setName(memberUpdateDto.getName());
-        member.setNickname(memberUpdateDto.getNickname());
-        member.setAddress(new Address(memberUpdateDto.getCity(),
-                memberUpdateDto.getStreet(), memberUpdateDto.getZipcode()));
     }
 }
