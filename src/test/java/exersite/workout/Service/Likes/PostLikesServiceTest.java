@@ -37,8 +37,11 @@ public class PostLikesServiceTest {
         postLikesService.clickPostLikes(memberId, postId); // 좋아요 클릭
 
         //then
-        Optional<PostLikes> optionalPostLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
-        Assert.assertTrue("DB에 좋아요 저장되었는지 확인", optionalPostLikes.isPresent());
+//        Optional<PostLikes> optionalPostLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
+//        Assert.assertTrue("DB에 좋아요 저장되었는지 확인", optionalPostLikes.isPresent());
+
+        PostLikes postLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
+        Assert.assertNotNull("DB에 좋아요 저장되었는지 확인", postLikes);
 
         Post findPost = postService.findOne(postId);
         Assert.assertEquals("좋아요 개수가 증가했는지 확인", 1, findPost.getLikes().size());
@@ -55,8 +58,11 @@ public class PostLikesServiceTest {
         postLikesService.clickPostLikes(memberId, postId); // 좋아요가 눌린 상태에서 한번 더 클릭
         
         //then
-        Optional<PostLikes> optionalPostLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
-        Assert.assertTrue("DB에 좋아요 삭제되었는지 확인", optionalPostLikes.isEmpty());
+//        Optional<PostLikes> optionalPostLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
+//        Assert.assertTrue("DB에 좋아요 삭제되었는지 확인", optionalPostLikes.isEmpty());
+
+        PostLikes postLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
+        Assert.assertNull("DB에 좋아요 삭제되었는지 확인", postLikes);
 
         Post findPost = postService.findOne(postId);
         Assert.assertEquals("좋아요 개수가 감소했는지 확인", 0, findPost.getLikes().size());

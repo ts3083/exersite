@@ -22,11 +22,21 @@ public class CommentLikesService {
     private final MemberService memberService;
 
     public void clickCommentLikes(Long memberId, Long commentId) {
-        Optional<CommentLikes> optionalCommentLikes =
-                commentLikesRepository.findOneByMemberAndComment(memberId, commentId);
-        if(optionalCommentLikes.isPresent()) {
+//        Optional<CommentLikes> optionalCommentLikes =
+//                commentLikesRepository.findOneByMemberAndComment(memberId, commentId);
+//        if(optionalCommentLikes.isPresent()) {
+//            // 이미 좋아요 누른 경우 : 좋아요 삭제
+//            deleteCommentLikes(optionalCommentLikes.get(), commentId);
+//        } else {
+//            // 좋아요를 누르지 않은 경우
+//            saveCommentLikes(memberId, commentId);
+//        }
+
+        CommentLikes commentLikes
+                = commentLikesRepository.findOneByMemberAndComment(memberId, commentId);
+        if(commentLikes != null) {
             // 이미 좋아요 누른 경우 : 좋아요 삭제
-            deleteCommentLikes(optionalCommentLikes.get(), commentId);
+            deleteCommentLikes(commentLikes, commentId);
         } else {
             // 좋아요를 누르지 않은 경우
             saveCommentLikes(memberId, commentId);

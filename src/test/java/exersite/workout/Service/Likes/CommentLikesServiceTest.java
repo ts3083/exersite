@@ -40,9 +40,12 @@ public class CommentLikesServiceTest {
         commentLikesService.clickCommentLikes(memberId, commentId);
 
         //then
-        Optional<CommentLikes> optionalCommentLikes
-                = commentLikesRepository.findOneByMemberAndComment(memberId, commentId);
-        Assert.assertTrue("DB에 좋아요 저장되었는지 확인", optionalCommentLikes.isPresent());
+//        Optional<CommentLikes> optionalCommentLikes
+//                = commentLikesRepository.findOneByMemberAndComment(memberId, commentId);
+//        Assert.assertTrue("DB에 좋아요 저장되었는지 확인", optionalCommentLikes.isPresent());
+
+        CommentLikes commentLikes = commentLikesRepository.findOneByMemberAndComment(memberId, commentId);
+        Assert.assertNotNull("DB에 좋아요 저장되었는지 확인", commentLikes);
 
         Comment findComment = commentService.findOne(commentId);
         Assert.assertEquals("좋아요 개수가 증가했는지 확인", 1, findComment.getLikes().size());
@@ -60,9 +63,12 @@ public class CommentLikesServiceTest {
         commentLikesService.clickCommentLikes(memberId, commentId); // 좋아요 취소
 
         //then
-        Optional<CommentLikes> optionalCommentLikes
-                = commentLikesRepository.findOneByMemberAndComment(memberId, commentId);
-        Assert.assertTrue("DB에 좋아요 삭제되었는지 확인", optionalCommentLikes.isEmpty());
+//        Optional<CommentLikes> optionalCommentLikes
+//                = commentLikesRepository.findOneByMemberAndComment(memberId, commentId);
+//        Assert.assertTrue("DB에 좋아요 삭제되었는지 확인", optionalCommentLikes.isEmpty());
+
+        CommentLikes commentLikes = commentLikesRepository.findOneByMemberAndComment(memberId, commentId);
+        Assert.assertNull("DB에 좋아요 삭제되었는지 확인", commentLikes);
 
         Comment findComment = commentService.findOne(commentId);
         Assert.assertEquals("좋아요 개수가 감소했는지 확인", 0, findComment.getLikes().size());

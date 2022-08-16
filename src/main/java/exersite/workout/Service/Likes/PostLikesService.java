@@ -22,10 +22,19 @@ public class PostLikesService {
     private final MemberService memberService;
 
     public void clickPostLikes(Long memberId, Long postId) {
-        Optional<PostLikes> optionPostLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
-        if(optionPostLikes.isPresent()) {
+//        Optional<PostLikes> optionPostLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
+//        if(optionPostLikes.isPresent()) {
+//            // 이미 좋아요 누른 경우 : 좋아요 삭제
+//            deletePostLikes(optionPostLikes.get(), postId);
+//        } else {
+//            // 좋아요를 누르지 않은 경우
+//            savePostLikes(memberId, postId);
+//        }
+
+        PostLikes postLikes = postLikesRepository.findOneByMemberAndPost(memberId, postId);
+        if(postLikes != null) {
             // 이미 좋아요 누른 경우 : 좋아요 삭제
-            deletePostLikes(optionPostLikes.get(), postId);
+            deletePostLikes(postLikes, postId);
         } else {
             // 좋아요를 누르지 않은 경우
             savePostLikes(memberId, postId);

@@ -1,8 +1,12 @@
 package exersite.workout.Repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import exersite.workout.Domain.Comment;
 import exersite.workout.Domain.Member.Member;
+import exersite.workout.Domain.Member.QMember;
 import exersite.workout.Domain.Post.Post;
+import exersite.workout.Domain.Post.QPost;
+import exersite.workout.Domain.Post.QPostCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Repository;
@@ -10,11 +14,16 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static exersite.workout.Domain.Member.QMember.*;
+import static exersite.workout.Domain.Post.QPost.*;
+import static exersite.workout.Domain.Post.QPostCategory.*;
+
 @Repository
 @RequiredArgsConstructor
 public class PostRepository {
 
     private final EntityManager em;
+    private final JPAQueryFactory queryFactory;
 
     // 게시글 저장
     public void save(Post post) {
@@ -45,40 +54,58 @@ public class PostRepository {
 
     // 특정 회원이 작성한 모든 게시글 조회(jpql)
     public List<Post> findAllByMember(Long memberId) {
-        return em.createQuery("select p from Post p join p.member m " +
-                        "on m.id = :Id order by p.postDate desc", Post.class)
-                .setParameter("Id", memberId)
-                .getResultList();
-    }
+//        return em.createQuery("select p from Post p join p.member m " +
+//                        "on m.id = :Id order by p.postDate desc", Post.class)
+//                .setParameter("Id", memberId)
+//                .getResultList();
 
-    // 특정 카테고리 게시글 리스트 조회
-    public List<Post> findAllByPostCategory(String postCategoryName) {
-        return em.createQuery("select p from Post p join p.postCategory pc " +
-                        "on pc.name = :name order by p.postDate desc", Post.class)
-                .setParameter("name", postCategoryName)
-                .getResultList();
+        return queryFactory
+                .selectFrom(post)
+                .join(post.member, member)
+                .on(member.id.eq(memberId))
+                .orderBy(post.postDate.desc())
+                .fetch();
     }
 
     // 게시글과 게시글 작성자 이름을 조회하기 위한 fetch join
     public List<Post> findAllPostsAndMemberNameWithFetch() {
-        return em.createQuery("select p from Post p " +
-                        " join fetch p.member m order by p.postDate desc ", Post.class)
-                .getResultList();
+//        return em.createQuery("select p from Post p " +
+//                        " join fetch p.member m order by p.postDate desc ", Post.class)
+//                .getResultList();
+
+        return queryFactory
+                .selectFrom(post)
+                .join(post.member, member).fetchJoin()
+                .orderBy(post.postDate.desc())
+                .fetch();
     }
 
     // 전체 게시글 최신순으로 조회
     public List<Post> findAllDescPostdate() {
-        return em.createQuery(
-                "select p from Post p order by p.postDate desc ", Post.class)
-                .getResultList();
+//        return em.createQuery(
+//                "select p from Post p order by p.postDate desc ", Post.class)
+//                .getResultList();
+
+        return queryFactory
+                .selectFrom(post)
+                .orderBy(post.postDate.desc())
+                .fetch();
     }
 
+    // 특정 카테고리 게시글 리스트 조회
     public List<Post> findAllDescPostdate(String postCategoryName) {
-        return em.createQuery(
-                        "select p from Post p " +
-                                "join p.postCategory pc on pc.name = :categoryName " +
-                                "order by p.postDate desc ", Post.class)
-                .setParameter("categoryName", postCategoryName)
-                .getResultList();
+//        return em.createQuery(
+//                        "select p from Post p " +
+//                                "join p.postCategory pc on pc.name = :categoryName " +
+//                                "order by p.postDate desc ", Post.class)
+//                .setParameter("categoryName", postCategoryName)
+//                .getResultList();
+
+        return queryFactory
+                .selectFrom(post)
+                .join(post.postCategory, postCategory)
+                .on(postCategory.name.eq(postCategoryName))
+                .orderBy(post.postDate.desc())
+                .fetch();
     }
 }
