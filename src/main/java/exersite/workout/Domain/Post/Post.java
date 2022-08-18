@@ -70,7 +70,6 @@ public class Post {
     }
 
     // 비즈니스 로직
-
     public void clickPost() { // 조회수 증가
         this.views += 1;
     }
