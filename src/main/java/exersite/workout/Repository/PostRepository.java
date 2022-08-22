@@ -4,10 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import exersite.workout.Domain.Comment;
 import exersite.workout.Domain.Member.Member;
-import exersite.workout.Domain.Member.QMember;
 import exersite.workout.Domain.Post.Post;
-import exersite.workout.Domain.Post.QPost;
-import exersite.workout.Domain.Post.QPostCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Repository;
@@ -86,29 +83,29 @@ public class PostRepository {
         return queryFactory
                 .selectFrom(post)
                 .join(post.member, member)
-                .where(getTitleContentEq(titleContent),
-                        getMemberNicknameEq(memberNickname))
+                .where(getTitleContentContains(titleContent),
+                        getMemberNicknameContains(memberNickname))
                 .fetch();
     }
 
-    private BooleanExpression getTitleContentEq(String titleContent) {
+    private BooleanExpression getTitleContentContains(String titleContent) {
         if (titleContent != null) {
-            return getTitleEq(titleContent).or(getTitleEq(titleContent));
+            return getTitleContains(titleContent).or(getContentContains(titleContent));
         } else {
             return null;
         }
     }
 
-    private BooleanExpression getTitleEq(String title) {
-        return title != null ? post.title.eq(title) : null;
+    private BooleanExpression getTitleContains(String title) {
+        return title != null ? post.title.contains(title) : null;
     }
 
-    private BooleanExpression getContentEq(String content) {
-        return content != null ? post.content.eq(content) : null;
+    private BooleanExpression getContentContains(String content) {
+        return content != null ? post.content.contains(content) : null;
     }
 
-    private BooleanExpression getMemberNicknameEq(String memberNickname) {
-        return memberNickname != null ? member.nickname.eq(memberNickname) : null;
+    private BooleanExpression getMemberNicknameContains(String memberNickname) {
+        return memberNickname != null ? member.nickname.contains(memberNickname) : null;
     }
 
     // 전체 게시글 최신순으로 조회
