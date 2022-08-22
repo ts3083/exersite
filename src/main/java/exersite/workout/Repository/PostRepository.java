@@ -1,5 +1,6 @@
 package exersite.workout.Repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import exersite.workout.Domain.Comment;
 import exersite.workout.Domain.Member.Member;
@@ -78,6 +79,36 @@ public class PostRepository {
                 .join(post.member, member).fetchJoin()
                 .orderBy(post.postDate.desc())
                 .fetch();
+    }
+
+    // 쿼리dsl을 활용한 동적쿼리 생성
+    public List<Post> findPostsBySearchCond(String titleContent, String memberNickname) {
+        return queryFactory
+                .selectFrom(post)
+                .join(post.member, member)
+                .where(getTitleContentEq(titleContent),
+                        getMemberNicknameEq(memberNickname))
+                .fetch();
+    }
+
+    private BooleanExpression getTitleContentEq(String titleContent) {
+        if (titleContent != null) {
+            return getTitleEq(titleContent).or(getTitleEq(titleContent));
+        } else {
+            return null;
+        }
+    }
+
+    private BooleanExpression getTitleEq(String title) {
+        return title != null ? post.title.eq(title) : null;
+    }
+
+    private BooleanExpression getContentEq(String content) {
+        return content != null ? post.content.eq(content) : null;
+    }
+
+    private BooleanExpression getMemberNicknameEq(String memberNickname) {
+        return memberNickname != null ? member.nickname.eq(memberNickname) : null;
     }
 
     // 전체 게시글 최신순으로 조회

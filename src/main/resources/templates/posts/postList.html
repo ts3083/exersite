@@ -35,16 +35,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="post : ${posts}">
-                <td th:text="${post.id}"></td>
-                <td th:text="${post.title}"></td>
-                <td th:text="${post.member.nickname}"></td>
-                <td th:text="${post.views}"></td>
-                <td th:text="${post.likes.size()}"></td>
-                <td th:text="${post.postDate}"></td>
+            <tr th:each="postDto : ${postDtos}">
+                <td th:text="${postDto.id}"></td>
+                <td th:text="${postDto.title}"></td>
+                <td th:text="${postDto.nickname}"></td>
+                <td th:text="${postDto.views}"></td>
+                <td th:text="${postDto.likes}"></td>
+                <td th:text="${postDto.postDate}"></td>
                 <td>
-                    <a href="#"
-                       th:href="'javascript:deta('+${post.id}+')'"
+                    <a th:href="@{/posts/{id}/detail (id=${postDto.id})}"
                        class="btn-light">상세보기</a>
                 </td>
             </tr>
@@ -54,13 +53,4 @@
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
 </body>
-<script>
-    function deta(id) {
-        const form = document.createElement("form");
-        form.setAttribute("method", "get");
-        form.setAttribute("action", "/posts/" + id + "/detail");
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script>
 </html>

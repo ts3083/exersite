@@ -7,6 +7,7 @@ import exersite.workout.Domain.Post.PostSearch;
 import exersite.workout.Repository.MemberRepository;
 import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.PostRepository;
+import exersite.workout.Repository.post.simplequery.PostDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -83,23 +85,33 @@ public class PostService {
         return postRepository.findAllByMember(memberId);
     }
 
+    // 쿼리dsl을 활용한 동적쿼리
     @Transactional(readOnly = true)
-    public List<Post> findPosts(PostSearch postSearch) {
-        List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
-        if (postSearch.getTitleOrContent() == null
-                && postSearch.getNickname() == null) {
-            // 바로 posts 반환
-            return posts;
-        }
-        // 필터링
-        List<Post> result = new ArrayList<>();
-        for (Post p : posts) {
-            if (isPostSearchContain(postSearch, p)) {
-                result.add(p);
-            }
-        }
-        return result;
+    public List<PostDto> findPostsByDsl(PostSearch postSearch) {
+        // postSearch에는 <제목+내용>, <작성자 이름>
+        List<Post> posts = postRepository.findPostsBySearchCond(
+                postSearch.getTitleOrContent(), postSearch.getNickname());
+        return posts.stream()
+                .map(post -> new PostDto(post)).collect(Collectors.toList());
     }
+
+//    @Transactional(readOnly = true)
+//    public List<Post> findPosts(PostSearch postSearch) {
+//        List<Post> posts = postRepository.findAllPostsAndMemberNameWithFetch();
+//        if (postSearch.getTitleOrContent() == null
+//                && postSearch.getNickname() == null) {
+//            // 바로 posts 반환
+//            return posts;
+//        }
+//        // 필터링
+//        List<Post> result = new ArrayList<>();
+//        for (Post p : posts) {
+//            if (isPostSearchContain(postSearch, p)) {
+//                result.add(p);
+//            }
+//        }
+//        return result;
+//    }
 
     private boolean isPostSearchContain(PostSearch postSearch, Post p) {
         if (!postSearch.getTitleOrContent().equals("")) {
