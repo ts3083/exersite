@@ -8,6 +8,7 @@ import exersite.workout.Domain.Post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 import static exersite.workout.Domain.Member.QMember.*;
 import static exersite.workout.Domain.Post.QPost.*;
 import static exersite.workout.Domain.Post.QPostCategory.*;
+import static org.springframework.util.StringUtils.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -89,7 +91,7 @@ public class PostRepository {
     }
 
     private BooleanExpression getTitleContentContains(String titleContent) {
-        if (titleContent != null) {
+        if (hasText(titleContent)) {
             return getTitleContains(titleContent).or(getContentContains(titleContent));
         } else {
             return null;
@@ -97,15 +99,15 @@ public class PostRepository {
     }
 
     private BooleanExpression getTitleContains(String title) {
-        return title != null ? post.title.contains(title) : null;
+        return hasText(title) ? post.title.contains(title) : null;
     }
 
     private BooleanExpression getContentContains(String content) {
-        return content != null ? post.content.contains(content) : null;
+        return hasText(content) ? post.content.contains(content) : null;
     }
 
     private BooleanExpression getMemberNicknameContains(String memberNickname) {
-        return memberNickname != null ? member.nickname.contains(memberNickname) : null;
+        return hasText(memberNickname) ? member.nickname.contains(memberNickname) : null;
     }
 
     // 전체 게시글 최신순으로 조회
