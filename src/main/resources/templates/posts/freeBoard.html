@@ -49,7 +49,7 @@
 </body>
 <script>
     function deta(id) {
-        var form = document.createElement("form");
+        const form = document.createElement("form");
         form.setAttribute("method", "get");
         form.setAttribute("action", "/posts/" + id + "/detail");
         document.body.appendChild(form);
