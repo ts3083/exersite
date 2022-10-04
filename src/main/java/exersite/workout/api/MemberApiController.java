@@ -14,7 +14,7 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
-    @GetMapping("api/members")
+    @GetMapping("/api/members")
     public MemberDto profileData(@AuthenticationPrincipal PrincipalDetails details) {
         return new MemberDto(details);
     }
