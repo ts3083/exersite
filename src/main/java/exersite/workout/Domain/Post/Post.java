@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,9 +30,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_category_id")
-    private PostCategory postCategory;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PostCategory postCategory; // 게시판 카테고리
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     Set<PostLikes> likes = new HashSet<>();
@@ -47,21 +48,16 @@ public class Post {
         member.getPosts().add(this);
     }
 
-    public void setPostCategory(PostCategory postCategory) {
-        this.postCategory = postCategory;
-        postCategory.getPosts().add(this);
-    }
-
     public void deletePost(Member member) {
         member.getPosts().remove(this);
     }
 
     // 생성 메서드
-    public static Post createPost(Member member, PostCategory postCategory,
+    public static Post createPost(Member member, String postCategoryName,
                                   String title, String content) {
         Post post = new Post();
         post.setMember(member);
-        post.setPostCategory(postCategory);
+        post.setPostCategory(PostCategory.valueOf(postCategoryName));
         post.setTitle(title);
         post.setContent(content);
         post.setViews(0);

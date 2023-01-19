@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import exersite.workout.Domain.Comment;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
+import exersite.workout.Domain.Post.PostCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Repository;
@@ -133,8 +134,7 @@ public class PostRepository {
 
         return queryFactory
                 .selectFrom(post)
-                .join(post.postCategory, postCategory)
-                .on(postCategory.name.eq(postCategoryName))
+                .where(post.postCategory.eq(PostCategory.valueOf(postCategoryName)))
                 .orderBy(post.postDate.desc())
                 .fetch();
     }

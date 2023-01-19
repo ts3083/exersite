@@ -3,9 +3,7 @@ package exersite.workout.Service;
 import exersite.workout.Domain.Member.Address;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
-import exersite.workout.Domain.Post.PostCategory;
 import exersite.workout.Domain.Post.PostSearch;
-import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.PostRepository;
 import exersite.workout.Repository.post.simplequery.PostDto;
 import org.junit.Test;
@@ -27,7 +25,6 @@ public class PostServiceTest {
 
     @Autowired PostService postService;
     @Autowired MemberService memberService;
-    @Autowired PostCategoryRepository postCategoryRepository;
     @Autowired PostRepository postRepository;
 
     @Test
@@ -36,16 +33,12 @@ public class PostServiceTest {
         // 회원 생성
         Long saveMemberId = createAndSaveSampleMemberA();
 
-        // 자유게시판 카테고리 불러오기
-        PostCategory postCategory = postCategoryRepository
-                .findOneByName("자유게시판");
-
         String title = "제목";
         String content = "본문내용";
 
         //when
         Long savePostId = postService.savePost(saveMemberId,
-                "자유게시판", title, content);
+                "free", title, content);
 
         //then
         Post findPost = postService.findOne(savePostId);
@@ -63,16 +56,12 @@ public class PostServiceTest {
         // 회원 생성
         Long saveMemberId = createAndSaveSampleMemberA();
 
-        // 자유게시판 카테고리 불러오기
-        PostCategory postCategory = postCategoryRepository
-                .findOneByName("자유게시판");
-
         String title = "수정전 제목";
         String content = "수정전 본문내용";
 
         //when
         Long savePostId = postService.savePost(saveMemberId,
-                postCategory.getName(), title, content);
+                "free", title, content);
         // 게시글 수정하기
         postService.updateTitleContent(savePostId,
                 "수정후 제목", "수정후 본문");
@@ -93,16 +82,12 @@ public class PostServiceTest {
         // 회원 생성
         Long saveMemberId = createAndSaveSampleMemberA();
 
-        // 자유게시판 카테고리 불러오기
-        PostCategory postCategory = postCategoryRepository
-                .findOneByName("자유게시판");
-
         String title = "제목";
         String content = "본문내용";
 
         //when
         Long savePostId = postService.savePost(saveMemberId,
-                postCategory.getName(), title, content);
+                "free", title, content);
 
         //then
         postService.deletePost(savePostId);
@@ -113,18 +98,16 @@ public class PostServiceTest {
     @Test
     public void 회원작성_게시글목록조회() throws Exception {
         //given
-        // 자유게시판 카테고리 불러오기
-        PostCategory postCategory = postCategoryRepository.findOneByName("자유게시판");
         Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
         Long memberIdB = createAndSaveSampleMemberB(); // 회원B 저장
 
         //when
         // A가 게시글 2개 작성
-        postService.savePost(memberIdA, "자유게시판", "ta1", "ca1");
-        postService.savePost(memberIdA, "자유게시판", "ta2", "ca2");
+        postService.savePost(memberIdA, "free", "ta1", "ca1");
+        postService.savePost(memberIdA, "free", "ta2", "ca2");
         // B가 게시글 2개 작성
-        postService.savePost(memberIdB, "자유게시판", "tb1", "cb1");
-        postService.savePost(memberIdB, "자유게시판", "tb2", "cb2");
+        postService.savePost(memberIdB, "free", "tb1", "cb1");
+        postService.savePost(memberIdB, "free", "tb2", "cb2");
 
         //then
         List<Post> postsByA = postRepository.findAllByMember(memberIdA); // A가 작성한 모든 게시글 리스트
@@ -137,7 +120,7 @@ public class PostServiceTest {
     public void 게시글_검색_작성자닉네임() throws Exception {
         //given
         Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
-        postService.savePost(memberIdA, "자유게시판", "ta1", "ca1");
+        postService.savePost(memberIdA, "free", "ta1", "ca1");
 
         //when
         PostSearch postSearch = new PostSearch();
@@ -154,7 +137,7 @@ public class PostServiceTest {
     public void 게시글_검색_제목() throws Exception {
         //given
         Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
-        postService.savePost(memberIdA, "자유게시판", "ta1", "ca1");
+        postService.savePost(memberIdA, "free", "ta1", "ca1");
 
         //when
         PostSearch postSearch = new PostSearch();
@@ -171,7 +154,7 @@ public class PostServiceTest {
     public void 게시글_검색_내용() throws Exception {
         //given
         Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
-        postService.savePost(memberIdA, "자유게시판", "ta1", "ca1");
+        postService.savePost(memberIdA, "free", "ta1", "ca1");
 
         //when
         PostSearch postSearch = new PostSearch();
@@ -188,8 +171,8 @@ public class PostServiceTest {
     public void 게시글_검색_제목내용에_겹치는_문자() throws Exception {
         //given
         Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
-        postService.savePost(memberIdA, "자유게시판", "ta1", "ca1");
-        postService.savePost(memberIdA, "자유게시판", "t2", "c2");
+        postService.savePost(memberIdA, "free", "ta1", "ca1");
+        postService.savePost(memberIdA, "free", "t2", "c2");
 
         //when
         PostSearch postSearch = new PostSearch();
@@ -207,8 +190,8 @@ public class PostServiceTest {
         //given
         Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
         Long memberIdB = createAndSaveSampleMemberB();
-        postService.savePost(memberIdA, "자유게시판", "ta1", "ca1");
-        postService.savePost(memberIdB, "자유게시판", "t2", "c2");
+        postService.savePost(memberIdA, "free", "ta1", "ca1");
+        postService.savePost(memberIdB, "free", "t2", "c2");
 
         //when
         PostSearch postSearch = new PostSearch();

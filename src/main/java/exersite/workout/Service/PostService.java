@@ -2,10 +2,8 @@ package exersite.workout.Service;
 
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
-import exersite.workout.Domain.Post.PostCategory;
 import exersite.workout.Domain.Post.PostSearch;
 import exersite.workout.Repository.MemberRepository;
-import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.PostRepository;
 import exersite.workout.Repository.post.simplequery.PostDto;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,18 +21,15 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-    private final PostCategoryRepository postCategoryRepository;
 
     // 게시글 저장
     public Long savePost(Long memberId, String postCategoryName,
                          String title, String content) {
         // 회원 찾아오기
         Member member = memberRepository.findOne(memberId);
-        PostCategory postCategory = postCategoryRepository
-                .findOneByName(postCategoryName);
 
         // 게시글 생성 - 회원, 카테고리, 제목, 본문
-        Post post = Post.createPost(member, postCategory, title, content);
+        Post post = Post.createPost(member, postCategoryName, title, content);
 
         // 게시글 저장
         postRepository.save(post);

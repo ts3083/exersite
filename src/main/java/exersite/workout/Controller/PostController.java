@@ -11,7 +11,6 @@ import exersite.workout.Domain.Post.Post;
 import exersite.workout.Domain.Post.PostCategory;
 import exersite.workout.Domain.Post.PostSearch;
 import exersite.workout.Repository.CommentRepository;
-import exersite.workout.Repository.PostCategoryRepository;
 import exersite.workout.Repository.post.simplequery.PostDto;
 import exersite.workout.Service.Likes.PostLikesService;
 import exersite.workout.Service.PostService;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final PostCategoryRepository postCategoryRepository;
     private final PostService postService;
     private final CommentRepository commentRepository;
     private final PostLikesService postLikesService;
@@ -40,7 +39,7 @@ public class PostController {
     public String freeCategoryPosts(Model model) {
 //        List<PostDto> freePosts = postSearchQueryRepository // dto로 조회하는 방법
 //                .findPostDtos("자유게시판");
-        List<Post> posts = postService.findAllDesc("자유게시판");
+        List<Post> posts = postService.findAllDesc("free");
         List<PostDto> freePosts = posts.stream()
                 .map(post -> new PostDto(post)).collect(Collectors.toList());
 
@@ -52,7 +51,7 @@ public class PostController {
     public String secretCategoryPosts(Model model) {
 //        List<PostDto> secretPosts = postSearchQueryRepository // dto로 조회하는 방법
 //                .findPostDtos("비밀게시판");
-        List<Post> posts = postService.findAllDesc("비밀게시판");
+        List<Post> posts = postService.findAllDesc("secret");
         List<PostDto> secretPosts = posts.stream()
                 .map(post -> new PostDto(post)).collect(Collectors.toList());
 
@@ -62,7 +61,8 @@ public class PostController {
 
     @GetMapping("/posts/createPost")
     public String creatPost(Model model) {
-        List<PostCategory> postCategories = postCategoryRepository.findAll();
+        List<PostCategory> postCategories
+                = Arrays.stream(PostCategory.values()).collect(Collectors.toList());
 
         model.addAttribute("postCategories", postCategories);
         model.addAttribute("postForm", new PostForm());

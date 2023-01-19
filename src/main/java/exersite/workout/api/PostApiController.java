@@ -20,7 +20,7 @@ public class PostApiController {
 
     @GetMapping("/posts/freeCategory")
     public List<myPostsDto> freeCategoryPostsApi() {
-        List<Post> posts = postService.findAllDesc("자유게시판");
+        List<Post> posts = postService.findAllDesc("free");
         List<myPostsDto> freePosts = posts.stream()
                 .map(post -> new myPostsDto(post)).collect(Collectors.toList());
 
