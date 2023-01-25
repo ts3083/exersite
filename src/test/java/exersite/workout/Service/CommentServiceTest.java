@@ -1,5 +1,6 @@
 package exersite.workout.Service;
 
+import exersite.workout.Controller.Forms.MemberForm;
 import exersite.workout.Domain.Member.Address;
 import exersite.workout.Domain.Comment;
 import exersite.workout.Domain.Member.Member;
@@ -129,16 +130,16 @@ public class CommentServiceTest {
     }
 
     private Long createAndSaveSampleMemberA() {
-        Member member = Member.createMember("a@naver.com",
+        MemberForm memberForm = MemberForm.createMember("a@naver.com",
                 new Address("서울", "양천로", "123456"),
                 "test1", "A", "123456");
-        return memberService.join(member);
+        return memberService.join(memberForm);
     }
 
     private Long createAndSaveSampleMemberB() {
-        Member member = Member.createMember("b@naver.com",
+        MemberForm memberForm = MemberForm.createMember("a@naver.com",
                 new Address("부산", "해운대", "45782"),
                 "test2", "B", "55555");
-        return memberService.join(member);
+        return memberService.join(memberForm);
     }
 }

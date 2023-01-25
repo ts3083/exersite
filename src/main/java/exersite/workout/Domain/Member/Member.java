@@ -18,7 +18,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "login_email_id")
+    @Column(name = "login_email_id", unique = true)
     private String loginId;
 
     @Embedded

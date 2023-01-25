@@ -67,4 +67,18 @@ public class MemberRepository {
                 .where(member.loginId.eq(loginId))
                 .fetch();
     }
+
+    public boolean checkEmptyByemail(String loginId) {
+        return queryFactory
+                .selectFrom(member)
+                .where(member.loginId.eq(loginId))
+                .fetch().isEmpty();
+    }
+
+    public boolean checkEmptyByNickname(String nickname) {
+        return queryFactory
+                .selectFrom(member)
+                .where(member.nickname.eq(nickname))
+                .fetch().isEmpty();
+    }
 }

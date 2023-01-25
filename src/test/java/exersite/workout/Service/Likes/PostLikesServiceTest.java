@@ -1,5 +1,6 @@
 package exersite.workout.Service.Likes;
 
+import exersite.workout.Controller.Forms.MemberForm;
 import exersite.workout.Domain.Member.Address;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
@@ -69,9 +70,9 @@ public class PostLikesServiceTest {
     }
 
     private Long createAndSaveSampleMemberA() {
-        Member member = Member.createMember("a@naver.com",
+        MemberForm memberForm = MemberForm.createMember("a@naver.com",
                 new Address("서울", "양천로", "123456"),
                 "test1", "A", "123456");
-        return memberService.join(member);
+        return memberService.join(memberForm);
     }
 }

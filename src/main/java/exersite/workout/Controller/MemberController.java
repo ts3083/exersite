@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class MemberController {
 
     private final MemberService memberService;
-    private final PasswordEncoder passwordEncoder;
+
 
     // 로그인 화면으로 이동
     @GetMapping("/loginForm")
@@ -41,14 +41,7 @@ public class MemberController {
         if (result.hasErrors()) { // 에러가 있으면 다시 회원가입 창으로 보냄 - 에러메시지 띄움
             return "members/createMemberForm";
         }
-        // 비밀번호 인코딩
-        String encodePassword = passwordEncoder.encode(form.getPassword());
-
-        Member member = Member.createMember(form.getLoginId(),
-                new Address(form.getCity(), form.getStreet(), form.getZipcode()),
-                form.getName(), form.getNickname(), encodePassword);
-
-        memberService.join(member);
+        memberService.processNewMember(form);
         return "redirect:/";
     }
 

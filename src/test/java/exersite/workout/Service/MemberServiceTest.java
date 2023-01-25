@@ -1,5 +1,6 @@
 package exersite.workout.Service;
 
+import exersite.workout.Controller.Forms.MemberForm;
 import exersite.workout.Domain.Member.Member;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -22,29 +23,35 @@ public class MemberServiceTest {
     @Test
     public void 회원가입() throws Exception {
         //given
-        Member member = new Member();
-        member.setName("A");
-        member.setLoginId("abc@naver.com");
+        MemberForm memberForm = new MemberForm();
+        memberForm.setName("A");
+        memberForm.setLoginId("abc@naver.com");
+        memberForm.setPassword("1234");
 
         //when
-        Long joinMemberId = memberService.join(member);
+        Long joinMemberId = memberService.join(memberForm);
 
         //then
-        Assertions.assertEquals(member, memberService.findOne(joinMemberId));
+        Assertions.assertEquals("A", memberService.findOne(joinMemberId).getName());
+        Assertions.assertEquals("abc@naver.com", memberService.findOne(joinMemberId).getLoginId());
     }
 
     @Test(expected = IllegalStateException.class)
     public void 중복회원예외() throws Exception {
         //given
-        Member member1 = new Member();
-        member1.setLoginId("abc@gmail.com");
+        MemberForm memberForm1 = new MemberForm();
+        memberForm1.setLoginId("abc@gmail.com");
+        memberForm1.setNickname("A");
+        memberForm1.setPassword("1111");
 
-        Member member2 = new Member();
-        member2.setLoginId("abc@gmail.com");
+        MemberForm memberForm2 = new MemberForm();
+        memberForm2.setLoginId("abc@gmail.com");
+        memberForm2.setNickname("B");
+        memberForm2.setPassword("2222");
 
         //when
-        memberService.join(member1);
-        memberService.join(member2); // 여기서 예외처리가 일어나야 함
+        memberService.processNewMember(memberForm1);
+        memberService.processNewMember(memberForm2); // 여기서 예외처리가 일어나야 함
 
         //then
         fail("예외처리가 발생해야 합니다"); // 코드가 여기까지 오면 에러
