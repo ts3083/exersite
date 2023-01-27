@@ -27,12 +27,12 @@ public class PostService {
                          String title, String content) {
         // 회원 찾아오기
         Member member = memberRepository.findOne(memberId);
-
         // 게시글 생성 - 회원, 카테고리, 제목, 본문
         Post post = Post.createPost(member, postCategoryName, title, content);
-
         // 게시글 저장
         postRepository.save(post);
+        // 게시글 저장되면 알림 이벤트 처리
+
         return post.getId();
     }
 

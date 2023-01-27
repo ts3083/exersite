@@ -1,9 +1,8 @@
 package exersite.workout.Service.Likes;
 
 import exersite.workout.Controller.Forms.MemberForm;
-import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Member.Address;
-import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.likes.CommentLikes;
 import exersite.workout.Repository.Likes.CommentLikesRepository;
 import exersite.workout.Service.CommentService;
@@ -16,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -3,7 +3,7 @@ package exersite.workout.Controller;
 import exersite.workout.Config.PrincipalDetails;
 import exersite.workout.Controller.Dtos.CommentUpdateDto;
 import exersite.workout.Controller.Forms.CommentForm;
-import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Service.CommentService;
 import exersite.workout.Service.Likes.CommentLikesService;
 import lombok.RequiredArgsConstructor;

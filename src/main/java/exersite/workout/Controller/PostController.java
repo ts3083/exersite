@@ -6,7 +6,7 @@ import exersite.workout.Controller.Dtos.PostDetailDto;
 import exersite.workout.Controller.Dtos.PostUpdateDto;
 import exersite.workout.Controller.Forms.CommentForm;
 import exersite.workout.Controller.Forms.PostForm;
-import exersite.workout.Domain.*;
+import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Post.Post;
 import exersite.workout.Domain.Post.PostCategory;
 import exersite.workout.Domain.Post.PostSearch;

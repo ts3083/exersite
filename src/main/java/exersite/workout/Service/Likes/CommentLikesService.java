@@ -1,6 +1,6 @@
 package exersite.workout.Service.Likes;
 
-import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.likes.CommentLikes;
 import exersite.workout.Repository.Likes.CommentLikesRepository;
@@ -9,8 +9,6 @@ import exersite.workout.Service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional

@@ -2,21 +2,19 @@ package exersite.workout.Repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
 import exersite.workout.Domain.Post.PostCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static exersite.workout.Domain.Member.QMember.*;
 import static exersite.workout.Domain.Post.QPost.*;
-import static exersite.workout.Domain.Post.QPostCategory.*;
 import static org.springframework.util.StringUtils.*;
 
 @Repository

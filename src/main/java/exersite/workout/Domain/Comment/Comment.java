@@ -1,4 +1,4 @@
-package exersite.workout.Domain;
+package exersite.workout.Domain.Comment;
 
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;

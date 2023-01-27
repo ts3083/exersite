@@ -2,10 +2,9 @@ package exersite.workout.Controller;
 
 import exersite.workout.Config.PrincipalDetails;
 import exersite.workout.Controller.Dtos.MemberDto;
-import exersite.workout.Controller.Dtos.MemberUpdateDto;
 import exersite.workout.Controller.Dtos.myCommentsDto;
 import exersite.workout.Controller.Dtos.myPostsDto;
-import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Post.Post;
 import exersite.workout.Service.CommentService;
 import exersite.workout.Service.MemberService;
@@ -15,10 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.view.RedirectView;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 

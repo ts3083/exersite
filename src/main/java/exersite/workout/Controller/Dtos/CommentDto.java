@@ -1,6 +1,6 @@
 package exersite.workout.Controller.Dtos;
 
-import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Comment.Comment;
 import lombok.Data;
 
 @Data

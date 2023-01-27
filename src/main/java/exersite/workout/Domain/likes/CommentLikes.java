@@ -1,6 +1,6 @@
 package exersite.workout.Domain.likes;
 
-import exersite.workout.Domain.Comment;
+import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Member.Member;
 import lombok.Getter;
 import lombok.Setter;
