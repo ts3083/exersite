@@ -4,5 +4,5 @@
 
 ***
 
-## 노션 링크
+## 노션 설명 링크
 [![Notion Badge](http://img.shields.io/badge/-notion-black?style=flat-square&logo=Notion&link=https://lacy-cheese-85b.notion.site/Exersite-2df250fc7d744f1c9eb542f2dbaea8e8)](https://lacy-cheese-85b.notion.site/Exersite-2df250fc7d744f1c9eb542f2dbaea8e8)
