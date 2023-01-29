@@ -3,10 +3,12 @@ package exersite.workout.Service;
 import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
+import exersite.workout.Event.CommentCreatedEvent;
 import exersite.workout.Repository.CommentRepository;
 import exersite.workout.Repository.MemberRepository;
 import exersite.workout.Repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,21 +22,22 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     // 댓글 저장
     @Transactional
     public Long saveComment(Long memberId, Long postId, String content) {
         // 회원 찾기
         Member member = memberRepository.findOne(memberId);
-
         // 게시글 찾기
         Post post = postRepository.findOne(postId);
-
         // 댓글 생성
         Comment comment = Comment.createComment(member, post, content);
-
         // 댓글 저장
         commentRepository.save(comment);
+        // 댓글 생성하면 알림 - CommentCreatedEvent 객체를 넘기면 이벤트리스너가 수행된다
+        applicationEventPublisher.publishEvent(new CommentCreatedEvent(comment));
+
         return comment.getId();
     }
 

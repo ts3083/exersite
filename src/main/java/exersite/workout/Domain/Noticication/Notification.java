@@ -1,13 +1,12 @@
 package exersite.workout.Domain.Noticication;
 
 import exersite.workout.Domain.Member.Member;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,6 +26,6 @@ public class Notification {
 
     private LocalDateTime createdTime; // 알림이 만들어진 시간
 
-    @ManyToOne
-    private Member member; // todo : 해쉬태그 설정 알림으로 변경
+    @OneToOne(fetch = FetchType.LAZY)
+    private Member member; // 글쓴 회원 참조
 }

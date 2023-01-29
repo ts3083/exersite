@@ -31,7 +31,6 @@ public class PostService {
         Post post = Post.createPost(member, postCategoryName, title, content);
         // 게시글 저장
         postRepository.save(post);
-        // 게시글 저장되면 알림 이벤트 처리
 
         return post.getId();
     }

@@ -19,6 +19,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public void processNewMember(MemberForm memberForm) {
         validateDuplicateMember(memberForm); // 중복 회원 검사
         Long newMemberId = join(memberForm);
