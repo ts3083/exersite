@@ -1,38 +1,36 @@
 package exersite.workout;
 
-import exersite.workout.Domain.Post.PostCategory;
+import exersite.workout.Controller.Forms.MemberForm;
+import exersite.workout.Domain.Member.Address;
+import exersite.workout.Service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
 
 @Component
 @RequiredArgsConstructor
 public class InitDb {
 
-    private final InitPostCategory initPostCategory;
+    private final initService initService;
 
     @PostConstruct
     public void init() {
-        initPostCategory.dbInit(); // 초기 게시판 카테고리 설정
+        initService.dbInit(); // 초기 게시판 카테고리 설정
     }
 
     @Component
     @Transactional
     @RequiredArgsConstructor
-    static class InitPostCategory {
+    static class initService {
 
-        private final EntityManager em;
+        private final MemberService memberService;
 
         public void dbInit() {
-            /*PostCategory postCategory1 = new PostCategory();
-            postCategory1.setName("자유게시판");
-            em.persist(postCategory1);
-            PostCategory postCategory2 = new PostCategory();
-            postCategory2.setName("비밀게시판");
-            em.persist(postCategory2);*/
+            MemberForm memberForm = MemberForm.createMember("1@gmail.com", new Address("seoul", "1", "1"),
+                    "kim", "london", "11111111");
+            memberService.join(memberForm);
         }
     }
 }

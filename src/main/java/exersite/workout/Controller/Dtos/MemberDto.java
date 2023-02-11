@@ -28,9 +28,9 @@ public class MemberDto {
 
     public MemberDto(PrincipalDetails principalDetails) {
         this.id = principalDetails.getId();
-        this.loginId = principalDetails.getUsername();
+        this.loginId = principalDetails.getLoginId();
         this.name = principalDetails.getName();
-        this.nickname = principalDetails.getNickname();
+        this.nickname = principalDetails.getUsername();
         this.city = principalDetails.getCity();
         this.street = principalDetails.getStreet();
         this.zipcode = principalDetails.getZipcode();
