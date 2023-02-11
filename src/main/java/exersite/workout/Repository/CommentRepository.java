@@ -13,7 +13,7 @@ import java.util.List;
 
 import static exersite.workout.Domain.Member.QMember.*;
 import static exersite.workout.Domain.Post.QPost.*;
-import static exersite.workout.Domain.QComment.*;
+import static exersite.workout.Domain.Comment.QComment.*;
 
 @Repository
 @RequiredArgsConstructor

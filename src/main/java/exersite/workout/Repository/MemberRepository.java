@@ -2,7 +2,6 @@ package exersite.workout.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import exersite.workout.Domain.Member.Member;
-import exersite.workout.Domain.Member.QMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
