@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // url 접
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/home", "/members/new", "/css/**").permitAll()
+                    .antMatchers("/", "/home", "/members/new").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -39,7 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { // url 접
     @Override
     public void configure(WebSecurity web) throws Exception { // static의 리소스들은 시프링 시큐리티를 무시
         web.ignoring()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .antMatchers("/error");
     }
 
     // 비밀번호 암호화

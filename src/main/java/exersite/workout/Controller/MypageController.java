@@ -43,7 +43,7 @@ public class MypageController {
                 .map(post -> new myPostsDto(post)).collect(Collectors.toList());
 
         model.addAttribute("myPostsDtos", myPostsDtos);
-        model.addAttribute("userNickname", details.getNickname());
+        model.addAttribute("userNickname", details.getUsername());
         return "myPages/myPosts";
     }
 
@@ -56,7 +56,7 @@ public class MypageController {
                 map(comment -> new myCommentsDto(comment)).collect(Collectors.toList());
 
         model.addAttribute("myCommentsDtos", myCommentsDtos);
-        model.addAttribute("userNickname", details.getNickname());
+        model.addAttribute("userNickname", details.getUsername());
         return "myPages/myComments";
     }
 

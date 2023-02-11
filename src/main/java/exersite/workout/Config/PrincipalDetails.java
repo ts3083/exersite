@@ -38,11 +38,11 @@ public class PrincipalDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return member.getLoginId();
+        return member.getNickname();
     }
 
-    public String getNickname() {
-        return member.getNickname();
+    public String getLoginId() {
+        return member.getLoginId();
     }
 
     public Long getId() {
