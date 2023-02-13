@@ -1,6 +1,7 @@
 package exersite.workout.Config;
 
 import exersite.workout.Domain.Member.Member;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import java.util.Collection;
  */
 
 @RequiredArgsConstructor
+@Getter
 public class PrincipalDetails implements UserDetails {
 
     private final Member member;

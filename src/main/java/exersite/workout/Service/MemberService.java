@@ -1,5 +1,6 @@
 package exersite.workout.Service;
 
+import exersite.workout.Controller.Dtos.MemberDto;
 import exersite.workout.Controller.Forms.MemberForm;
 import exersite.workout.Domain.Member.Address;
 import exersite.workout.Domain.Member.Member;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true) // 단순 조회의 경우 readOnly=true
@@ -49,13 +51,15 @@ public class MemberService {
         }
     }
 
-    // 회원 전체 조회
-    public List<Member> findMembers() {
-        return memberRepository.findAll();
-    }
-
     // id로 회원 조회
     public Member findOne(Long memberId) {
         return memberRepository.findOne(memberId);
+    }
+
+    // 회원 전체 조회 -> Dto로 변환
+    public List<MemberDto> findMemberDtos() {
+        return memberRepository.findAll().stream()
+                .map(member -> new MemberDto(member))
+                .collect(Collectors.toList());
     }
 }

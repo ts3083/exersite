@@ -1,17 +1,21 @@
 package exersite.workout.Controller;
 
+import exersite.workout.Config.CurrentUser;
 import exersite.workout.Config.PrincipalDetails;
 import exersite.workout.Controller.Dtos.CommentDto;
+import exersite.workout.Controller.Dtos.MemberDto;
 import exersite.workout.Controller.Dtos.PostDetailDto;
 import exersite.workout.Controller.Dtos.PostUpdateDto;
 import exersite.workout.Controller.Forms.CommentForm;
 import exersite.workout.Controller.Forms.PostForm;
 import exersite.workout.Domain.Comment.Comment;
+import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
 import exersite.workout.Domain.Post.PostCategory;
 import exersite.workout.Domain.Post.PostSearch;
 import exersite.workout.Repository.CommentRepository;
 import exersite.workout.Repository.post.simplequery.PostDto;
+import exersite.workout.Service.CommentService;
 import exersite.workout.Service.Likes.PostLikesService;
 import exersite.workout.Service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -32,17 +36,14 @@ import java.util.stream.Collectors;
 public class PostController {
 
     private final PostService postService;
-    private final CommentRepository commentRepository;
+    private final CommentService commentService;
     private final PostLikesService postLikesService;
 
     @GetMapping("/posts/freeCategory")
     public String freeCategoryPosts(Model model) {
 //        List<PostDto> freePosts = postSearchQueryRepository // dto로 조회하는 방법
 //                .findPostDtos("자유게시판");
-        List<Post> posts = postService.findAllDesc("free");
-        List<PostDto> freePosts = posts.stream()
-                .map(post -> new PostDto(post)).collect(Collectors.toList());
-
+        List<PostDto> freePosts = postService.findAllPostDtosDesc("free");
         model.addAttribute("freePosts", freePosts);
         return "posts/freeBoard";
     }
@@ -51,10 +52,7 @@ public class PostController {
     public String secretCategoryPosts(Model model) {
 //        List<PostDto> secretPosts = postSearchQueryRepository // dto로 조회하는 방법
 //                .findPostDtos("비밀게시판");
-        List<Post> posts = postService.findAllDesc("secret");
-        List<PostDto> secretPosts = posts.stream()
-                .map(post -> new PostDto(post)).collect(Collectors.toList());
-
+        List<PostDto> secretPosts = postService.findAllPostDtosDesc("secret");
         model.addAttribute("secretPosts", secretPosts);
         return "posts/secretBoard";
     }
@@ -70,14 +68,14 @@ public class PostController {
     }
 
     @PostMapping("/posts/createPost")
-    public String post(@AuthenticationPrincipal PrincipalDetails details,
+    public String post(@CurrentUser Member member,
                        @RequestParam("postCategoryName") String postCategoryName,
                        @Valid PostForm postForm, BindingResult result) {
         if (postCategoryName.equals("") || result.hasErrors()) {
             // 에러가 있으면 다시 게시글 작성 창으로
             return "posts/createPostForm";
         }
-        postService.savePost(details.getId(), postCategoryName,
+        postService.savePost(member.getId(), postCategoryName,
                 postForm.getTitle(), postForm.getContent());
         return "boardHome";
     }
@@ -94,24 +92,20 @@ public class PostController {
 
     @GetMapping("/posts/{postId}/detail")
     public String detailPost(@PathVariable("postId") Long postId,
-                             @AuthenticationPrincipal PrincipalDetails details,
-                             Model model) {
+                             @CurrentUser Member member, Model model) {
         // 상세보기 클릭
         // 조회수 증가
         postService.updateViewsByClickPost(postId);
 
         // 해당 게시글의 post를 dto로 변환하여 html에 전달
-        Post post = postService.findOne(postId);
-        PostDetailDto postDto = new PostDetailDto(post);
+        PostDetailDto postDto = postService.findOneByPostDetailDto(postId);
 
         // 해당 게시글에 달린 댓글 리스트 dto로 변환하여 html에 전달
-        List<Comment> comments = commentRepository.findAllByPost(postId);
-        List<CommentDto> commentDtos = comments.stream()
-                .map(comment -> new CommentDto(comment))
-                .collect(Collectors.toList());
+        List<CommentDto> commentDtos = commentService.findAllCommentDtosByPostId(postId);
+
 
         // 댓글 작성 시 값을 전달받을 commentForm 객체 전달
-        model.addAttribute("user", details);
+        model.addAttribute("user", new MemberDto(member));
         model.addAttribute("commentForm", new CommentForm());
         model.addAttribute("postDto", postDto);
         model.addAttribute("commentDtos", commentDtos);
@@ -123,7 +117,6 @@ public class PostController {
     public String updatePostForm(@PathVariable("id") Long postId, Model model) {
         Post post = postService.findOne(postId);
         model.addAttribute("postDto", new PostDto(post));
-
         model.addAttribute("postUpdateForm", new PostUpdateDto(postId));
         return "posts/updatePostForm";
     }
@@ -142,12 +135,21 @@ public class PostController {
         return "boardHome";
     }
 
-    @PostMapping("/posts/{postId}/clickPostLikes")
-    public RedirectView clickPostLikes(@AuthenticationPrincipal PrincipalDetails details,
+    /*@PostMapping("/posts/{postId}/clickPostLikes")
+    public RedirectView clickPostLikes(@CurrentUser Member member,
                                        @PathVariable("postId") Long postId) {
 
-        postLikesService.clickPostLikes(details.getId(), postId);
+        postLikesService.clickPostLikes(member.getId(), postId);
 
         return new RedirectView("/posts/{postId}/detail");
+    }*/
+
+    @PostMapping("/posts/{postId}/clickPostLikes")
+    public String clickPostLikes(@CurrentUser Member member,
+                                       @PathVariable("postId") Long postId) {
+
+        postLikesService.clickPostLikes(member.getId(), postId);
+
+        return "redirect:/posts/" + postId + "/detail";
     }
 }
