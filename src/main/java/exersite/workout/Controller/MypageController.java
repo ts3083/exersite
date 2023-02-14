@@ -6,11 +6,13 @@ import exersite.workout.Controller.Dtos.myCommentsDto;
 import exersite.workout.Controller.Dtos.myPostsDto;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Service.CommentService;
+import exersite.workout.Service.MemberService;
 import exersite.workout.Service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MypageController {
 
+    private final MemberService memberService;
     private final PostService postService;
     private final CommentService commentService;
 
@@ -60,4 +63,10 @@ public class MypageController {
 //        memberService.updateMember(details.getId(), memberDto);
 //        return "boardHome";
 //    }
+
+    @PostMapping("/myPages/updateProfile")
+    public String updateProfile(@CurrentUser Member member, MemberDto memberDto) {
+        memberService.updateMember(member.getId(), memberDto);
+        return "redirect:/myPage";
+    }
 }
