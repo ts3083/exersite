@@ -1,5 +1,7 @@
 package exersite.workout.Service;
 
+import exersite.workout.Controller.Dtos.CommentDto;
+import exersite.workout.Controller.Dtos.myCommentsDto;
 import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -61,7 +64,14 @@ public class CommentService {
     }
 
     // 특정 회원이 작성한 모든 댓글 조회
-    public List<Comment> findAllByUser(Long memberId) {
-        return commentRepository.findAllByMember(memberId);
+    public List<myCommentsDto> findAllmyCommentDtoByUser(Long memberId) {
+        return commentRepository.findAllByMember(memberId).stream()
+                .map(comment -> new myCommentsDto(comment)).collect(Collectors.toList());
+    }
+
+    // 특정 게시글에 달린 댓글 모두 조회
+    public List<CommentDto> findAllCommentDtosByPostId(Long postId) {
+        return commentRepository.findAllByPost(postId).stream()
+                .map(comment -> new CommentDto(comment)).collect(Collectors.toList());
     }
 }

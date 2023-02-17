@@ -1,8 +1,12 @@
 package exersite.workout.Service;
 
+import exersite.workout.Controller.Dtos.CommentDto;
+import exersite.workout.Controller.Dtos.PostDetailDto;
+import exersite.workout.Controller.Dtos.myPostsDto;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
 import exersite.workout.Domain.Post.PostSearch;
+import exersite.workout.Repository.CommentRepository;
 import exersite.workout.Repository.MemberRepository;
 import exersite.workout.Repository.PostRepository;
 import exersite.workout.Repository.post.simplequery.PostDto;
@@ -15,7 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class PostService {
 
@@ -23,6 +26,7 @@ public class PostService {
     private final MemberRepository memberRepository;
 
     // 게시글 저장
+    @Transactional
     public Long savePost(Long memberId, String postCategoryName,
                          String title, String content) {
         // 회원 찾아오기
@@ -36,12 +40,14 @@ public class PostService {
     }
 
     // 게시글 삭제
+    @Transactional
     public void deletePost(Long postId) {
         Post post = postRepository.findOne(postId);
         postRepository.remove(post);
     }
 
     // 게시글 수정
+    @Transactional
     public void updateTitleContent(Long postId, String title, String content) {
         Post post = postRepository.findOne(postId);
         post.setTitle(title);
@@ -50,6 +56,7 @@ public class PostService {
     }
 
     // 조회수 증가
+    @Transactional
     public void updateViewsByClickPost(Long postId) {
         Post post = postRepository.findOne(postId);
         //post.setViews(post.getViews() + 1);
@@ -57,29 +64,26 @@ public class PostService {
     }
 
     // 게시글 조회
-    @Transactional(readOnly = true)
     public Post findOne(Long postId) {
         return postRepository.findOne(postId);
     }
 
-    @Transactional(readOnly = true)
-    public List<Post> findAllDesc() {
-        return postRepository.findAllDescPostdate();
+    public List<PostDto> findAllPostDtosDesc(String categoryName) {
+        return postRepository.findAllDescPostdate(categoryName).stream()
+                .map(post -> new PostDto(post)).collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
-    public List<Post> findAllDesc(String CategoryName) {
-        return postRepository.findAllDescPostdate(CategoryName);
+    public PostDetailDto findOneByPostDetailDto(Long postId) {
+        return new PostDetailDto(postRepository.findOne(postId));
     }
 
     // 특정 회원이 작성한 모든 게시글 조회 메서드
-    @Transactional(readOnly = true)
-    public List<Post> findAllByUser(Long memberId) {
-        return postRepository.findAllByMember(memberId);
+    public List<myPostsDto> findAllmyPostDtosByUser(Long memberId) {
+        return postRepository.findAllByMember(memberId).stream()
+                .map(post -> new myPostsDto(post)).collect(Collectors.toList());
     }
 
     // 쿼리dsl을 활용한 동적쿼리
-    @Transactional(readOnly = true)
     public List<PostDto> findPostsByDsl(PostSearch postSearch) {
         // postSearch에는 <제목+내용>, <작성자 이름>
         List<Post> posts = postRepository.findPostsBySearchCond(

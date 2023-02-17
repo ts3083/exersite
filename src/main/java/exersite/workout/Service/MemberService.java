@@ -1,18 +1,22 @@
 package exersite.workout.Service;
 
+import exersite.workout.Config.PrincipalDetails;
+import exersite.workout.Controller.Dtos.MemberDto;
 import exersite.workout.Controller.Forms.MemberForm;
 import exersite.workout.Domain.Member.Address;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true) // 단순 조회의 경우 readOnly=true
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -49,13 +53,31 @@ public class MemberService {
         }
     }
 
-    // 회원 전체 조회
-    public List<Member> findMembers() {
-        return memberRepository.findAll();
-    }
-
     // id로 회원 조회
     public Member findOne(Long memberId) {
         return memberRepository.findOne(memberId);
+    }
+
+    // 회원 전체 조회 -> Dto로 변환
+    public List<MemberDto> findMemberDtos() {
+        return memberRepository.findAll().stream()
+                .map(member -> new MemberDto(member))
+                .collect(Collectors.toList());
+    }
+
+    // 프로필에서 내 정보 수정
+    @Transactional
+    public void updateMember(Long memberId, MemberDto memberDto) {
+        Member member = memberRepository.findOne(memberId);
+        member.setName(memberDto.getName());
+        member.setNickname(memberDto.getNickname());
+        member.setLoginId(memberDto.getLoginId());
+        member.setAddress(new Address(memberDto.getCity(), memberDto.getStreet(), memberDto.getZipcode()));
+
+        // 내 정보를 변경하면 다시 로그인하여 authentication을 재설정
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                new PrincipalDetails(member),
+                member.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 }
