@@ -78,4 +78,9 @@ public class MypageController {
         memberService.updateMember(member.getId(), memberDto);
         return "redirect:/myPage";
     }
+
+    /*@GetMapping("/myChatroom")
+    public String myChatroom(@CurrentUser Member member, Model model) {
+
+    }*/
 }
