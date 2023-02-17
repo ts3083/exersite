@@ -47,11 +47,8 @@ public class MemberController {
 
     @GetMapping("/members")
     public String memberList(Model model) {
-        List<Member> memberList = memberService.findMembers();
-        List<MemberDto> members = memberList.stream()
-                .map(member -> new MemberDto(member))
-                .collect(Collectors.toList());
-        model.addAttribute("members", members);
+        List<MemberDto> memberDtos = memberService.findMemberDtos();
+        model.addAttribute("members", memberDtos);
         return "/members/memberList";
     }
 }

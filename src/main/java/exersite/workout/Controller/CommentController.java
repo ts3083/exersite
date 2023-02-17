@@ -1,9 +1,11 @@
 package exersite.workout.Controller;
 
+import exersite.workout.Config.CurrentUser;
 import exersite.workout.Config.PrincipalDetails;
 import exersite.workout.Controller.Dtos.CommentUpdateDto;
 import exersite.workout.Controller.Forms.CommentForm;
 import exersite.workout.Domain.Comment.Comment;
+import exersite.workout.Domain.Member.Member;
 import exersite.workout.Service.CommentService;
 import exersite.workout.Service.Likes.CommentLikesService;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +29,14 @@ public class CommentController {
 
     // 댓글 생성
     @PostMapping("/posts/{postId}/createComment")
-    public RedirectView createComment(@AuthenticationPrincipal PrincipalDetails details,
+    public RedirectView createComment(@CurrentUser Member member,
                                       @PathVariable Long postId,
                                       @Valid CommentForm commentForm, BindingResult result) {
         if (result.hasErrors()) {
             return new RedirectView("/posts/{postId}/detail");
         }
 
-        commentService.saveComment(details.getId(), postId, commentForm.getContent());
+        commentService.saveComment(member.getId(), postId, commentForm.getContent());
 
         return new RedirectView("/posts/{postId}/detail");
     }
@@ -53,8 +55,7 @@ public class CommentController {
     public RedirectView updateComment(@PathVariable("id") Long commentId,
                                 @Valid CommentUpdateDto commentUpdateDto) {
         commentService.updateComment(commentId, commentUpdateDto.getContent());
-        Comment comment = commentService.findOne(commentId);
-        Long postId = comment.getPost().getId();
+        Long postId = commentService.findOne(commentId).getPost().getId();
 
         String url = "/posts/" + postId + "/detail";
         return new RedirectView(url);
@@ -63,8 +64,7 @@ public class CommentController {
     // 댓글 삭제
     @PostMapping("/comments/{id}/delete")
     public RedirectView deleteComment(@PathVariable("id") Long commentId) {
-        Comment comment = commentService.findOne(commentId);
-        Long postId = comment.getPost().getId();
+        Long postId = commentService.findOne(commentId).getPost().getId();
 
         commentService.deleteComment(commentId);
 
@@ -74,12 +74,11 @@ public class CommentController {
 
     // 댓글 좋아요
     @PostMapping("/posts/{commentId}/clickCommentLikes")
-    public RedirectView clickCommentLikes(@AuthenticationPrincipal PrincipalDetails details,
+    public RedirectView clickCommentLikes(@CurrentUser Member member,
                                           @PathVariable("commentId") Long commentId) {
 
-        commentLikesService.clickCommentLikes(details.getId(), commentId);
-        Comment comment = commentService.findOne(commentId);
-        Long postId = comment.getPost().getId();
+        commentLikesService.clickCommentLikes(member.getId(), commentId);
+        Long postId = commentService.findOne(commentId).getPost().getId();
 
         String url = "/posts/" + postId + "/detail";
         return new RedirectView(url);

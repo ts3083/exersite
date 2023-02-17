@@ -19,20 +19,11 @@ public class MemberDto {
 
     public MemberDto(Member member) {
         this.id = member.getId();
+        this.loginId = member.getLoginId();
         this.name = member.getName();
         this.nickname = member.getNickname();
         this.city = member.getAddress().getCity();
         this.street = member.getAddress().getStreet();
         this.zipcode = member.getAddress().getZipcode();
-    }
-
-    public MemberDto(PrincipalDetails principalDetails) {
-        this.id = principalDetails.getId();
-        this.loginId = principalDetails.getLoginId();
-        this.name = principalDetails.getName();
-        this.nickname = principalDetails.getUsername();
-        this.city = principalDetails.getCity();
-        this.street = principalDetails.getStreet();
-        this.zipcode = principalDetails.getZipcode();
     }
 }
