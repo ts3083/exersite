@@ -28,9 +28,12 @@ public class InitDb {
         private final MemberService memberService;
 
         public void dbInit() {
-            MemberForm memberForm = MemberForm.createMember("1@gmail.com", new Address("seoul", "1", "1"),
+            MemberForm memberForm1 = MemberForm.createMember("1@gmail.com", new Address("seoul", "1", "1"),
                     "kim", "london", "11111111");
-            memberService.join(memberForm);
+            MemberForm memberForm2 = MemberForm.createMember("2@gmail.com", new Address("seoul", "2", "2"),
+                    "Lee", "tokyo", "22222222");
+            memberService.join(memberForm1);
+            memberService.join(memberForm2);
         }
     }
 }

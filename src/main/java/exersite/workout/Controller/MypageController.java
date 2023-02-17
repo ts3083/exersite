@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -29,6 +30,14 @@ public class MypageController {
         MemberDto memberDto = new MemberDto(member);
         model.addAttribute("memberDto", memberDto);
         return "myPages/profile";
+    }
+
+    @GetMapping("/profile/{nickname}")
+    public String profilePage(@CurrentUser Member member, @PathVariable String nickname, Model model) {
+        MemberDto memberDto = memberService.profile(nickname);
+        model.addAttribute("memberDto", memberDto);
+        model.addAttribute("LoginUser", memberDto.getId().equals(member.getId()));
+        return "members/otherProfile";
     }
 
     // 내가 쓴 게시글 리스트

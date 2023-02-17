@@ -34,15 +34,15 @@ public class MemberRepository {
                 .fetch();
     }
 
-    public List<Member> findByName(String name) { // 같은 이름의 회원리스트 조회
+    public Member findByNickname(String nickname) { // 같은 이름의 회원리스트 조회
 //        return em.createQuery("select m from Member m where m.name = :name", Member.class)
 //                .setParameter("name", name)
 //                .getResultList();
 
         return queryFactory
                 .selectFrom(member)
-                .where(member.name.eq(name))
-                .fetch();
+                .where(member.nickname.eq(nickname))
+                .fetchOne();
     }
 
     public Member findByLoginId(String loginId) { // 특정 loginId를 같은 회원리스트 조회

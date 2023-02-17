@@ -34,6 +34,7 @@ public class Member {
     private MemberStatus memberStatus; // 회원 상태 [MEMBER, DELETED]
 
     private String name;
+    @Column(unique = true)
     private String nickname;
     private String password;
     private LocalDateTime memberDate;

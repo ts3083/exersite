@@ -3,6 +3,7 @@ package exersite.workout.Controller.Dtos;
 import exersite.workout.Config.PrincipalDetails;
 import exersite.workout.Domain.Member.Member;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 public class MemberDto {

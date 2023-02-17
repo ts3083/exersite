@@ -80,4 +80,12 @@ public class MemberService {
                 member.getPassword());
         SecurityContextHolder.getContext().setAuthentication(token);
     }
+
+    public MemberDto profile(String nickname) {
+        Member member = memberRepository.findByNickname(nickname);
+        if (member == null) {
+            throw new IllegalArgumentException("회원을 찾을 수 없습니다.");
+        }
+        return new MemberDto(member);
+    }
 }
