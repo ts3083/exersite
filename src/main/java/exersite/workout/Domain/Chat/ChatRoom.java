@@ -1,6 +1,5 @@
 package exersite.workout.Domain.Chat;
 
-import exersite.workout.Domain.Member.Member;
 import lombok.Getter;
 import lombok.Setter;
 

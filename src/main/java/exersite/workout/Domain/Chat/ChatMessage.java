@@ -16,6 +16,7 @@ public class ChatMessage {
     private Long id;
     private String message;
     private LocalDateTime sendDate;
+    private MessageType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -30,11 +31,13 @@ public class ChatMessage {
         chatRoom.getChatMessages().add(this);
     }
 
-    public static ChatMessage createChatMessage(String message, Member member, ChatRoom chatRoom) {
+    public static ChatMessage createChatMessage(String message, Member member, ChatRoom chatRoom
+                                                ,MessageType messageType) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setMessage(message);
         chatMessage.setMember(member);
         chatMessage.setChatRoom(chatRoom);
+        chatMessage.setType(messageType);
         return chatMessage;
     }
 }
