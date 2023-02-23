@@ -38,6 +38,7 @@ public class ChatMessage {
         chatMessage.setMember(member);
         chatMessage.setChatRoom(chatRoom);
         chatMessage.setType(messageType);
+        chatMessage.setSendDate(LocalDateTime.now());
         return chatMessage;
     }
 }
