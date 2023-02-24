@@ -1,9 +1,10 @@
 package exersite.workout.Controller;
 
 import exersite.workout.Config.CurrentUser;
+import exersite.workout.Controller.Dtos.ChatMessageDto;
 import exersite.workout.Controller.Dtos.ChatRoomDto;
+import exersite.workout.Domain.Chat.ChatRoom;
 import exersite.workout.Domain.Member.Member;
-import exersite.workout.Repository.ChatRoomRepository;
 import exersite.workout.Service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,26 +20,40 @@ import java.util.List;
 public class ChatController {
 
     private final ChatService chatService;
-    private final ChatRoomRepository chatRoomRepository;
 
+    /**
+     * 내 프로필에서 내가 참여하고 있는 채팅방 목록 보여주기
+     * 로그인한 Member와 chatMembers를 통해 CurrentUser가 참여하고 있는 chatRoom 목록 전달
+     * */
     @GetMapping("/chatRooms")
     public String chatRoom(@CurrentUser Member member, Model model) {
-        // 현재 채팅중인 채팅방 리스트 전달
         List<ChatRoomDto> chatRoomByDto = chatService.findAllChatRoomByDto(member);
         model.addAttribute("chatRooms", chatRoomByDto);
         return "chat/chatRoomList";
     }
 
-    /*@GetMapping("/chatRoom/{roomId}")
-    public String room(@PathVariable String roomId, Model model) {
-        // 특정 채팅방으로 이동
-        // 이전까지의 chatMessage 내용을 가져와서 전달
+    /**
+     * 이미 속해있는 채팅방으로 이동
+     * model : 이전 채팅 기록 + roomId
+     * */
+    @GetMapping("/{roomId}")
+    public String openChatRoom(@PathVariable Long roomId, Model model) {
+        List<ChatMessageDto> chatMessageDtos = chatService.findAllMessageByChatRoomIdDtos(roomId);
+        model.addAttribute("roomId", roomId);
+        model.addAttribute("chatMessageDtos", chatMessageDtos);
+        return "chat/chatRoom";
     }
 
-    @PostMapping("/chatRoom/new/{nickname}")
-    public String newRoom(@CurrentUser Member member,String nickname, Model model) {
-        // 특정 사용자 프로필에서 채팅하기 버튼을 클릭
-        // 이미 만들어졌는지 확인
-        // 사용자들의 이름으로 채팅방 이름을 만들고 채팅방으로 이동
-    }*/
+    /**
+     * 새로운 채팅방 생성
+     * 다른 user의 페이지에서 채팅하기 버튼을 클릭하면 chatRoom으로 이동
+     * chatMembers, chatRoom에 데이터 저장
+     * */
+    @PostMapping("/chatRoom/new/{otherUserId}")
+    public String createChatRoom(@PathVariable Long otherUserId, @CurrentUser Member member) {
+        // chatRoom 저장
+        // chatRoom, Member로 chatMembers 저장
+        ChatRoom saveChatRoom = chatService.createChatRoomProcess(member, otherUserId);
+        return "redirect:/" + saveChatRoom.getId();
+    }
 }

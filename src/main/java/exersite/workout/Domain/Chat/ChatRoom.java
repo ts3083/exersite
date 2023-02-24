@@ -16,7 +16,6 @@ public class ChatRoom {
     @Id @GeneratedValue
     @Column(name = "chatRoom_id")
     private Long id;
-    private String roomId;
     private String roomName;
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private Set<ChatMembers> chatMembers = new HashSet<>();
@@ -24,9 +23,8 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
-    public static ChatRoom createChatRoom(String roomId, String roomName) {
+    public static ChatRoom createChatRoom(String roomName) {
         ChatRoom chatRoom = new ChatRoom();
-        chatRoom.setRoomId(roomId);
         chatRoom.setRoomName(roomName);
         return chatRoom;
     }

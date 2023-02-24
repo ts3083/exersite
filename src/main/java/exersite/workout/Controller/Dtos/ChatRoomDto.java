@@ -1,16 +1,18 @@
 package exersite.workout.Controller.Dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import exersite.workout.Domain.Chat.ChatRoom;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class ChatRoomDto {
 
-    private String roomId;
+    private Long roomId;
     private String roomName;
+
+    public ChatRoomDto(ChatRoom chatRoom) {
+        this.roomId = chatRoom.getId();
+        this.roomName = chatRoom.getRoomName();
+    }
 }
