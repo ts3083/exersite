@@ -34,7 +34,13 @@ public class ChatMessage {
     public static ChatMessage createChatMessage(String message, Member member, ChatRoom chatRoom
                                                 ,MessageType messageType) {
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setMessage(message);
+        if (messageType.equals(MessageType.ENTER)) {
+            chatMessage.setMessage(member.getNickname() + "님이 입장하셨습니다.");
+        } else if(messageType.equals(MessageType.LEAVE)) {
+            chatMessage.setMessage(member.getNickname() + "님이 퇴장하셨습니다.");
+        } else {
+            chatMessage.setMessage(message);
+        }
         chatMessage.setMember(member);
         chatMessage.setChatRoom(chatRoom);
         chatMessage.setType(messageType);

@@ -16,6 +16,8 @@ public class ChatRoom {
     @Id @GeneratedValue
     @Column(name = "chatRoom_id")
     private Long id;
+
+    @Column(unique = true)
     private String roomName;
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private Set<ChatMembers> chatMembers = new HashSet<>();

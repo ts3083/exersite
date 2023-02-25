@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ChatService {
 
@@ -26,18 +27,19 @@ public class ChatService {
     private final MemberRepository memberRepository;
     private final ChatMembersRepository chatMembersRepository;
 
+    @Transactional(readOnly = true)
     public List<ChatRoomDto> findAllChatRoomByDto(Member member) {
         return chatRoomRepository.findAllByMember(member.getId())
                 .stream().map(chatRoom -> new ChatRoomDto(chatRoom)).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<ChatMessageDto> findAllMessageByChatRoomIdDtos(Long roomId) {
         List<ChatMessage> chatMessages = chatMessageRepository.findAllByChatRoomId(roomId);
         return chatMessages.stream()
                 .map(chatMessage -> new ChatMessageDto(chatMessage)).collect(Collectors.toList());
     }
 
-    @Transactional
     public ChatRoom createChatRoomProcess(Member loginUser, Long otherUserId) {
         Member otherUser = memberRepository.findOne(otherUserId);
         ChatRoom saveChatRoom = saveChatRoom(loginUser, otherUser);
@@ -58,7 +60,6 @@ public class ChatService {
     }
 
     // ChatMessageDto를 활용해서 ChatMessage 저장
-    @Transactional
     public ChatMessageDto saveChatMessage(Long roomId, ChatMessageDto chatMessageDto) {
         Member member = memberRepository.findByNickname(chatMessageDto.getSender());
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).get();
@@ -66,5 +67,21 @@ public class ChatService {
                 chatMessageDto.getType());
         ChatMessage saveChatMessage = chatMessageRepository.save(chatMessage);
         return new ChatMessageDto(saveChatMessage);
+    }
+
+    @Transactional(readOnly = true)
+    public ChatRoom findChatRoomExist(Member loginUser, Long otherUserId) {
+        Member otherUser = memberRepository.findOne(otherUserId);
+        String roomName1 = loginUser.getNickname() + " " + otherUser.getNickname();
+        String roomName2 = otherUser.getNickname() + " " + loginUser.getNickname();
+
+        ChatRoom chatRoom1 = chatRoomRepository.findByRoomName(roomName1);
+        ChatRoom chatRoom2 = chatRoomRepository.findByRoomName(roomName2);
+        if (chatRoom1 != null)
+            return chatRoom1;
+        else if (chatRoom2 != null)
+            return chatRoom2;
+        else
+            return null;
     }
 }
