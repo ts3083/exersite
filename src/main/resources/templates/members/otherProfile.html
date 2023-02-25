@@ -13,7 +13,7 @@
             <ul class="list-group mb-3">
                 <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                        <a class="dropdown-item rounded-2" th:href="'javascript:goPost('+${memberDto.id}+')'">채팅하기</a>
+                        <a class="dropdown-item rounded-2" th:href="@{/chatRoom/new/{Id} (Id = ${memberDto.id})}">채팅하기</a>
                     </div>
                 </li>
             </ul>
@@ -68,13 +68,4 @@
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
 </body>
-<script>
-    function goPost(id) {
-        const form = document.createElement("form");
-        form.setAttribute("method", "post");
-        form.setAttribute("action", "/chatRoom/new/" + id);
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script>
 </html>

@@ -1,5 +1,6 @@
 package exersite.workout.Service;
 
+import exersite.workout.Controller.Forms.ChatRoomForm;
 import exersite.workout.Domain.Chat.ChatRoom;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Repository.MemberRepository;
@@ -21,22 +22,15 @@ class ChatServiceTest {
     @Autowired ChatService chatService;
     @Autowired MemberRepository memberRepository;
 
-    @DisplayName("채팅룸이 이미 존재하는지 체크 테스트")
-    @Test
-    public void chatRoomExistTest() throws Exception {
-        Member member = memberRepository.findByNickname("london");
-        ChatRoom chatRoom = chatService.findChatRoomExist(member, 2L);
-
-        assertNull("chatRoom이 null인지 검사", chatRoom);
-    }
-
     @DisplayName("chatRoom 저장 테스트")
     @Test
     public void chatRoomSaveTest() throws Exception {
         Member member = memberRepository.findByNickname("london");
-        ChatRoom saveChatRoom = chatService.createChatRoomProcess(member, 2L);
+        ChatRoomForm chatRoomForm = new ChatRoomForm();
+        chatRoomForm.setRoomName("test");
+        ChatRoom saveChatRoom = chatService.createChatRoomProcess(member, 2L, chatRoomForm);
 
         assertNotNull("chatRoom이 null인지 검사", saveChatRoom);
-        assertEquals("london tokyo", saveChatRoom.getRoomName());
+        assertEquals("test", saveChatRoom.getRoomName());
     }
 }
