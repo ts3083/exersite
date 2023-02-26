@@ -32,8 +32,11 @@ public class InitDb {
                     "kim", "london", "11111111");
             MemberForm memberForm2 = MemberForm.createMember("2@gmail.com", new Address("seoul", "2", "2"),
                     "Lee", "tokyo", "22222222");
+            MemberForm memberForm3 = MemberForm.createMember("3@gmail.com", new Address("seoul", "3", "3"),
+                    "Park", "Berlin", "33333333");
             memberService.join(memberForm1);
             memberService.join(memberForm2);
+            memberService.join(memberForm3);
         }
     }
 }

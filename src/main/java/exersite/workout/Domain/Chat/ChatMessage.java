@@ -16,6 +16,7 @@ public class ChatMessage {
     private Long id;
     private String message;
     private LocalDateTime sendDate;
+    @Enumerated(EnumType.STRING)
     private MessageType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
