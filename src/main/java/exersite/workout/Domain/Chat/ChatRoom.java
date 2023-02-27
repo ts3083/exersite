@@ -1,5 +1,6 @@
 package exersite.workout.Domain.Chat;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Getter @Setter
+@EqualsAndHashCode(of = "id")
 public class ChatRoom {
 
     @Id @GeneratedValue

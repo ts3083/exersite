@@ -10,6 +10,9 @@
     <div class="jumbotron">
         <h1>채팅방 목록</h1>
     </div>
+    <div style="float: right">
+        <a class="btn btn-primary" th:href="@{/chatRoom/new}">방만들기</a>
+    </div>
     <table class = "table table-striped">
         <thead>
         <tr>
@@ -23,7 +26,7 @@
             <td th:text="${chatRoomDto.roomId}"></td>
             <td th:text="${chatRoomDto.roomName}"></td>
             <td>
-                <a class = "btn btn-primary" th:href = "@{/{roomId} (roomId = ${chatRoomDto.roomId})}"></a>
+                <a class = "btn btn-primary" th:href = "@{/{roomId} (roomId = ${chatRoomDto.roomId})}">입장</a>
             </td>
         </tr>
         </tbody>

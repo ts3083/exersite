@@ -28,7 +28,8 @@ class ChatServiceTest {
         Member member = memberRepository.findByNickname("london");
         ChatRoomForm chatRoomForm = new ChatRoomForm();
         chatRoomForm.setRoomName("test");
-        ChatRoom saveChatRoom = chatService.createChatRoomProcess(member, 2L, chatRoomForm);
+
+        ChatRoom saveChatRoom = chatService.createChatRoomProcess(member, chatRoomForm);
 
         assertNotNull("chatRoom이 null인지 검사", saveChatRoom);
         assertEquals("test", saveChatRoom.getRoomName());

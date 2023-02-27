@@ -42,13 +42,13 @@
                     <label>내용</label>
                     <input type="text" id="message" class="form-control" placeholder="메시지 내용">
                 </div>
-                <button id="send" class="btn btn-default" type="submit">Send</button>
+                <button id="send" class="btn btn-primary" type="submit">Send</button>
             </form>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <table id="conversation" class="table table-success">
                 <thead>
                 <tr>
                     <th>Chat</th>
@@ -165,6 +165,7 @@
         connect();
     }
 
+    //사용자가 페이지를 떠날 때 발생
     window.BeforeUnloadEvent = function (){
         disconnect();
     }

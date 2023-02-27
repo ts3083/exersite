@@ -41,10 +41,15 @@ public class ChatService {
                 .map(chatMessage -> new ChatMessageDto(chatMessage)).collect(Collectors.toList());
     }
 
-    public ChatRoom createChatRoomProcess(Member loginUser, Long otherUserId, ChatRoomForm chatRoomForm) {
-        Member otherUser = memberRepository.findOne(otherUserId);
-        ChatRoom saveChatRoom = saveChatRoom(chatRoomForm.getRoomName());
-        saveChatMembers(loginUser, otherUser, saveChatRoom);
+    @Transactional(readOnly = true)
+    public List<ChatRoomDto> findAllChatRoomDtos() {
+        return chatRoomRepository.findAll()
+                .stream().map(chatRoom -> new ChatRoomDto(chatRoom)).collect(Collectors.toList());
+    }
+
+    public ChatRoom createChatRoomProcess(Member loginUser, ChatRoomForm chatRoomForm) {
+        ChatRoom saveChatRoom = saveChatRoom(chatRoomForm.getRoomName()); // chatRoom 저장
+        saveChatMembers(loginUser, saveChatRoom);
         return saveChatRoom;
     }
 
@@ -53,10 +58,9 @@ public class ChatService {
         return chatRoomRepository.save(chatRoom);
     }
 
-    private void saveChatMembers(Member loginUser, Member otherUser, ChatRoom saveChatRoom) {
-        ChatMembers user1 = ChatMembers.createChatMembers(loginUser, saveChatRoom);
-        ChatMembers user2 = ChatMembers.createChatMembers(otherUser, saveChatRoom);
-        chatMembersRepository.saveAll(List.of(user1, user2));
+    private void saveChatMembers(Member member, ChatRoom saveChatRoom) {
+        ChatMembers user = ChatMembers.createChatMembers(member, saveChatRoom);
+        chatMembersRepository.save(user);
     }
 
     // ChatMessageDto를 활용해서 ChatMessage 저장
@@ -67,5 +71,14 @@ public class ChatService {
                 chatMessageDto.getType());
         ChatMessage saveChatMessage = chatMessageRepository.save(chatMessage);
         return new ChatMessageDto(saveChatMessage);
+    }
+
+    // 채팅방 참여를 누른 사용자가 이미 채팅방 멤버인지 확인하고 아니라면 저장
+    public void checkChatMembers(Long roomId, Member member) {
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).get();
+        boolean exists = chatMembersRepository.existsByChatRoomAndMember(chatRoom, member);
+        if (!exists) { // 채팅방에 처음 들어가는 거라면 chatMembers에 저장
+            saveChatMembers(member, chatRoom);
+        }
     }
 }
