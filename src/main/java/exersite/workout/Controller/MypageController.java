@@ -66,21 +66,9 @@ public class MypageController {
         return "myPages/updateProfileForm";
     }
 
-//    @PostMapping("/myPages/updateProfileForm")
-//    public String updateProfile(@AuthenticationPrincipal PrincipalDetails details,
-//                                @Valid MemberDto memberDto) {
-//        memberService.updateMember(details.getId(), memberDto);
-//        return "boardHome";
-//    }
-
     @PostMapping("/myPages/updateProfile")
     public String updateProfile(@CurrentUser Member member, MemberDto memberDto) {
-        memberService.updateMember(member.getId(), memberDto);
+        memberService.updateMember(member, memberDto);
         return "redirect:/myPage";
     }
-
-    /*@GetMapping("/myChatroom")
-    public String myChatroom(@CurrentUser Member member, Model model) {
-
-    }*/
 }
