@@ -6,6 +6,7 @@ import exersite.workout.Controller.Dtos.ChatRoomDto;
 import exersite.workout.Controller.Forms.ChatRoomForm;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Service.ChatService;
+import exersite.workout.Validator.ChatRoomFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import java.util.List;
 public class ChatController {
 
     private final ChatService chatService;
+    private final ChatRoomFormValidator chatRoomFormValidator;
 
     /**
      * 내 프로필에서 내가 참여하고 있는 채팅방 목록 보여주기
@@ -75,6 +77,10 @@ public class ChatController {
     @PostMapping("/chatRoom/new")
     public String createRoom(@Valid ChatRoomForm chatRoomForm, @CurrentUser Member member,
                              Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            return "chat/roomForm";
+        }
+        chatRoomFormValidator.validate(chatRoomForm, errors);
         if (errors.hasErrors()) {
             return "chat/roomForm";
         }

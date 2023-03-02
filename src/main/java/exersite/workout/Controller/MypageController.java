@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -67,8 +68,10 @@ public class MypageController {
     }
 
     @PostMapping("/myPages/updateProfile")
-    public String updateProfile(@CurrentUser Member member, MemberDto memberDto) {
+    public String updateProfile(@CurrentUser Member member, MemberDto memberDto,
+                                RedirectAttributes redirectAttributes) {
         memberService.updateMember(member, memberDto);
+        redirectAttributes.addFlashAttribute("message", "프로필이 수정되었습니다.");
         return "redirect:/myPage";
     }
 }
