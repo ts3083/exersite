@@ -75,8 +75,8 @@ public class ChatController {
      * chatRoom, chatMembers에 본인 저장하기
      * */
     @PostMapping("/chatRoom/new")
-    public String createRoom(@Valid ChatRoomForm chatRoomForm, @CurrentUser Member member,
-                             Errors errors, Model model) {
+    public String createRoom(@Valid ChatRoomForm chatRoomForm, Errors errors,
+                             @CurrentUser Member member, Model model) {
         if (errors.hasErrors()) {
             return "chat/roomForm";
         }
