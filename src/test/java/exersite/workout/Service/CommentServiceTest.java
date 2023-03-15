@@ -1,6 +1,7 @@
 package exersite.workout.Service;
 
 import exersite.workout.Controller.Forms.MemberForm;
+import exersite.workout.Controller.Forms.PostForm;
 import exersite.workout.Domain.Member.Address;
 import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Member.Member;
@@ -33,8 +34,11 @@ public class CommentServiceTest {
     public void 댓글_저장() throws Exception {
         //given
         Long memberAId = createAndSaveSampleMemberA(); // 회원 A 저장
+        PostForm postForm1 = new PostForm();
+        postForm1.setTitle("t");
+        postForm1.setContent("c");
         Long postId = postService.savePost(memberAId,
-                "자유게시판", "t", "c"); // 회원 A가 게시글 저장
+                "자유게시판", postForm1); // 회원 A가 게시글 저장
 
         //when
         Long saveCommentId = commentService.saveComment(memberAId, postId, "test1");
@@ -52,8 +56,11 @@ public class CommentServiceTest {
     public void 댓글_삭제() throws Exception {
         //given
         Long memberAId = createAndSaveSampleMemberA(); // 회원 A 저장
+        PostForm postForm1 = new PostForm();
+        postForm1.setTitle("ta1");
+        postForm1.setContent("ca1");
         Long postId = postService.savePost(memberAId,
-                "자유게시판", "t", "c"); // 회원 A가 게시글 저장
+                "자유게시판", postForm1); // 회원 A가 게시글 저장
 
         //when
         Long saveCommentId1 = commentService.saveComment(memberAId, postId, "test1");
@@ -75,8 +82,11 @@ public class CommentServiceTest {
     public void 댓글_존재_게시글삭제() throws Exception {
         //댓글이 달린 게시글을 삭제하면 댓글들이 DB에서 삭제되는지?
         Long memberAId = createAndSaveSampleMemberA();
+        PostForm postForm1 = new PostForm();
+        postForm1.setTitle("ta1");
+        postForm1.setContent("ca1");
         Long postId = postService.savePost(memberAId,
-                "자유게시판", "t", "c"); // 회원 A가 게시글 저장
+                "자유게시판", postForm1); // 회원 A가 게시글 저장
         Long saveCommentId1 = commentService.saveComment(memberAId, postId, "test1");
 
         //when
@@ -94,8 +104,11 @@ public class CommentServiceTest {
     public void 댓글_수정() throws Exception {
         //given
         Long memberAId = createAndSaveSampleMemberA(); // 회원 A 저장
+        PostForm postForm1 = new PostForm();
+        postForm1.setTitle("ta1");
+        postForm1.setContent("ca1");
         Long postId = postService.savePost(memberAId,
-                "자유게시판", "t", "c"); // 회원 A가 게시글 저장
+                "자유게시판", postForm1); // 회원 A가 게시글 저장
         Long saveCommentId1 = commentService.saveComment(memberAId, postId, "test");
 
         //when
@@ -111,8 +124,11 @@ public class CommentServiceTest {
         //given
         Long memberAId = createAndSaveSampleMemberA(); // 회원 A 저장
         Long memberBId = createAndSaveSampleMemberB(); // 회원 B 저장
+        PostForm postForm1 = new PostForm();
+        postForm1.setTitle("ta1");
+        postForm1.setContent("ca1");
         Long postAId = postService.savePost(memberAId,
-                "자유게시판", "t", "c"); // 회원 A가 게시글 저장
+                "자유게시판", postForm1); // 회원 A가 게시글 저장
 
         //when
         commentService.saveComment(memberAId, postAId, "A comment1");

@@ -1,5 +1,6 @@
 package exersite.workout.Domain.Post;
 
+import exersite.workout.Controller.Forms.PostForm;
 import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.likes.PostLikes;
@@ -37,6 +38,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private Set<PostLikes> likes = new HashSet<>();
 
+    @Lob @Basic(fetch = FetchType.EAGER)
+    private String postImage;
+
     private LocalDateTime postDate;
     private int views;
     private String title;
@@ -53,13 +57,13 @@ public class Post {
     }
 
     // 생성 메서드
-    public static Post createPost(Member member, String postCategoryName,
-                                  String title, String content) {
+    public static Post createPost(Member member, String postCategoryName, PostForm postForm) {
         Post post = new Post();
         post.setMember(member);
         post.setPostCategory(PostCategory.valueOf(postCategoryName));
-        post.setTitle(title);
-        post.setContent(content);
+        post.setTitle(postForm.getTitle());
+        post.setContent(postForm.getContent());
+        post.setPostImage(postForm.getPostImage());
         post.setViews(0);
         post.setPostDate(LocalDateTime.now());
         return post;

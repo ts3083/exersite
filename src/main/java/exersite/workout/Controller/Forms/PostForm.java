@@ -12,4 +12,5 @@ public class PostForm {
     private String title;
     @NotEmpty(message = "필수 사항")
     private String content;
+    private String postImage;
 }

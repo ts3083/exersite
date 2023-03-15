@@ -26,7 +26,11 @@ public class PostRepository {
 
     // 게시글 저장
     public void save(Post post) {
-        em.persist(post);
+        if (post.getId() == null) {
+            em.persist(post);
+        } else {
+            em.merge(post);
+        }
     }
 
     // 게시글 삭제 - 영속성 전이로 DB의 게시글에 달린 댓글들 사리짐

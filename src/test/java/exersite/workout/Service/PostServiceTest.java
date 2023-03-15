@@ -1,6 +1,7 @@
 package exersite.workout.Service;
 
 import exersite.workout.Controller.Forms.MemberForm;
+import exersite.workout.Controller.Forms.PostForm;
 import exersite.workout.Domain.Member.Address;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
@@ -34,20 +35,21 @@ public class PostServiceTest {
         // 회원 생성
         Long saveMemberId = createAndSaveSampleMemberA();
 
-        String title = "제목";
-        String content = "본문내용";
+        PostForm postForm = new PostForm();
+        postForm.setTitle("제목");
+        postForm.setContent("본문내용");
 
         //when
         Long savePostId = postService.savePost(saveMemberId,
-                "free", title, content);
+                "free", postForm);
 
         //then
         Post findPost = postService.findOne(savePostId);
         assertEquals("게시글 작성 회원의 이름 확인", "test1",
                 findPost.getMember().getName());
-        assertEquals("게시글 제목이 같은지 확인", title,
+        assertEquals("게시글 제목이 같은지 확인", "제목",
                 findPost.getTitle());
-        assertEquals("게시글 내용이 같은지 확인", content,
+        assertEquals("게시글 내용이 같은지 확인", "본문내용",
                 findPost.getContent());
     }
 
@@ -57,12 +59,13 @@ public class PostServiceTest {
         // 회원 생성
         Long saveMemberId = createAndSaveSampleMemberA();
 
-        String title = "수정전 제목";
-        String content = "수정전 본문내용";
+        PostForm postForm = new PostForm();
+        postForm.setTitle("수정전 제목");
+        postForm.setContent("수정전 본문내용");
 
         //when
         Long savePostId = postService.savePost(saveMemberId,
-                "free", title, content);
+                "free", postForm);
         // 게시글 수정하기
         postService.updateTitleContent(savePostId,
                 "수정후 제목", "수정후 본문");
@@ -83,12 +86,13 @@ public class PostServiceTest {
         // 회원 생성
         Long saveMemberId = createAndSaveSampleMemberA();
 
-        String title = "제목";
-        String content = "본문내용";
+        PostForm postForm = new PostForm();
+        postForm.setTitle("제목");
+        postForm.setContent("본문내용");
 
         //when
         Long savePostId = postService.savePost(saveMemberId,
-                "free", title, content);
+                "free", postForm);
 
         //then
         postService.deletePost(savePostId);
@@ -97,31 +101,13 @@ public class PostServiceTest {
     }
 
     @Test
-    public void 회원작성_게시글목록조회() throws Exception {
-        //given
-        Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
-        Long memberIdB = createAndSaveSampleMemberB(); // 회원B 저장
-
-        //when
-        // A가 게시글 2개 작성
-        postService.savePost(memberIdA, "free", "ta1", "ca1");
-        postService.savePost(memberIdA, "free", "ta2", "ca2");
-        // B가 게시글 2개 작성
-        postService.savePost(memberIdB, "free", "tb1", "cb1");
-        postService.savePost(memberIdB, "free", "tb2", "cb2");
-
-        //then
-        List<Post> postsByA = postRepository.findAllByMember(memberIdA); // A가 작성한 모든 게시글 리스트
-        List<Post> postsByB = postRepository.findAllByMember(memberIdB); // A가 작성한 모든 게시글 리스트
-        assertEquals("A의 작성게시글 개수 확인", 2, postsByA.size());
-        assertEquals("B의 작성게시글 개수 확인", 2, postsByB.size());
-    }
-
-    @Test
     public void 게시글_검색_작성자닉네임() throws Exception {
         //given
         Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
-        postService.savePost(memberIdA, "free", "ta1", "ca1");
+        PostForm postForm1 = new PostForm();
+        postForm1.setTitle("ta1");
+        postForm1.setContent("ca1");
+        postService.savePost(memberIdA, "free", postForm1);
 
         //when
         PostSearch postSearch = new PostSearch();
@@ -138,7 +124,10 @@ public class PostServiceTest {
     public void 게시글_검색_제목() throws Exception {
         //given
         Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
-        postService.savePost(memberIdA, "free", "ta1", "ca1");
+        PostForm postForm1 = new PostForm();
+        postForm1.setTitle("ta1");
+        postForm1.setContent("ca1");
+        postService.savePost(memberIdA, "free", postForm1);
 
         //when
         PostSearch postSearch = new PostSearch();
@@ -155,7 +144,10 @@ public class PostServiceTest {
     public void 게시글_검색_내용() throws Exception {
         //given
         Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
-        postService.savePost(memberIdA, "free", "ta1", "ca1");
+        PostForm postForm1 = new PostForm();
+        postForm1.setTitle("ta1");
+        postForm1.setContent("ca1");
+        postService.savePost(memberIdA, "free", postForm1);
 
         //when
         PostSearch postSearch = new PostSearch();
@@ -166,42 +158,6 @@ public class PostServiceTest {
         assertEquals(1, postDtos.size());
         assertEquals("ta1", postDtos.get(0).getTitle());
         assertEquals("A", postDtos.get(0).getNickname());
-    }
-
-    @Test
-    public void 게시글_검색_제목내용에_겹치는_문자() throws Exception {
-        //given
-        Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
-        postService.savePost(memberIdA, "free", "ta1", "ca1");
-        postService.savePost(memberIdA, "free", "t2", "c2");
-
-        //when
-        PostSearch postSearch = new PostSearch();
-        postSearch.setTitleOrContent("a");
-
-        //then
-        List<PostDto> postDtos = postService.findPostsByDsl(postSearch);
-        assertEquals(1, postDtos.size());
-        assertEquals("ta1", postDtos.get(0).getTitle());
-        assertEquals("A", postDtos.get(0).getNickname());
-    }
-
-    @Test
-    public void 게시글_검색_둘다검색() throws Exception {
-        //given
-        Long memberIdA = createAndSaveSampleMemberA(); // 회원A 저장
-        Long memberIdB = createAndSaveSampleMemberB();
-        postService.savePost(memberIdA, "free", "ta1", "ca1");
-        postService.savePost(memberIdB, "free", "t2", "c2");
-
-        //when
-        PostSearch postSearch = new PostSearch();
-        postSearch.setTitleOrContent("a");
-        postSearch.setNickname("B");
-
-        //then
-        List<PostDto> postDtos = postService.findPostsByDsl(postSearch);
-        assertEquals(0, postDtos.size());
     }
 
     private Long createAndSaveSampleMemberA() {

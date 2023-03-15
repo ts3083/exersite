@@ -1,6 +1,7 @@
 package exersite.workout.Service.Likes;
 
 import exersite.workout.Controller.Forms.MemberForm;
+import exersite.workout.Controller.Forms.PostForm;
 import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Member.Address;
 import exersite.workout.Domain.likes.CommentLikes;
@@ -31,7 +32,10 @@ public class CommentLikesServiceTest {
     public void 댓글_좋아요_테스트() throws Exception {
         //given
         Long memberId = createAndSaveSampleMemberA(); // 회원 A 저장
-        Long postId = postService.savePost(memberId, "자유게시판", "ta1", "ca1");
+        PostForm postForm1 = new PostForm();
+        postForm1.setTitle("ta1");
+        postForm1.setContent("ca1");
+        Long postId = postService.savePost(memberId, "자유게시판", postForm1);
         Long commentId = commentService.saveComment(memberId, postId, "content");
 
         //when
@@ -53,7 +57,10 @@ public class CommentLikesServiceTest {
     public void 댓글_좋아요취소_테스트() throws Exception {
         //given
         Long memberId = createAndSaveSampleMemberA(); // 회원 A 저장
-        Long postId = postService.savePost(memberId, "자유게시판", "ta1", "ca1");
+        PostForm postForm1 = new PostForm();
+        postForm1.setTitle("ta1");
+        postForm1.setContent("ca1");
+        Long postId = postService.savePost(memberId, "자유게시판", postForm1);
         Long commentId = commentService.saveComment(memberId, postId, "content");
         commentLikesService.clickCommentLikes(memberId, commentId); // 좋아요 저장
 

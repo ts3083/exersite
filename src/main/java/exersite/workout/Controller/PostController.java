@@ -75,8 +75,7 @@ public class PostController {
             // 에러가 있으면 다시 게시글 작성 창으로
             return "posts/createPostForm";
         }
-        postService.savePost(member.getId(), postCategoryName,
-                postForm.getTitle(), postForm.getContent());
+        postService.savePost(member.getId(), postCategoryName, postForm);
         return "boardHome";
     }
 

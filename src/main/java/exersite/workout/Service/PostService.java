@@ -3,6 +3,7 @@ package exersite.workout.Service;
 import exersite.workout.Controller.Dtos.CommentDto;
 import exersite.workout.Controller.Dtos.PostDetailDto;
 import exersite.workout.Controller.Dtos.myPostsDto;
+import exersite.workout.Controller.Forms.PostForm;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
 import exersite.workout.Domain.Post.PostSearch;
@@ -27,12 +28,11 @@ public class PostService {
 
     // 게시글 저장
     @Transactional
-    public Long savePost(Long memberId, String postCategoryName,
-                         String title, String content) {
+    public Long savePost(Long memberId, String postCategoryName, PostForm postForm) {
         // 회원 찾아오기
         Member member = memberRepository.findOne(memberId);
         // 게시글 생성 - 회원, 카테고리, 제목, 본문
-        Post post = Post.createPost(member, postCategoryName, title, content);
+        Post post = Post.createPost(member, postCategoryName, postForm);
         // 게시글 저장
         postRepository.save(post);
         // 게시글 저장되면 알림 이벤트 처리
