@@ -2,6 +2,7 @@ package exersite.workout.Domain.Member;
 
 import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Post.Post;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
+@EqualsAndHashCode(of = "id")
 public class Member {
     
     @Id @GeneratedValue
@@ -34,6 +36,7 @@ public class Member {
     private MemberStatus memberStatus; // 회원 상태 [MEMBER, DELETED]
 
     private String name;
+    @Column(unique = true)
     private String nickname;
     private String password;
     private LocalDateTime memberDate;

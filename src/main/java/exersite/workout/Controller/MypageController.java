@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -29,6 +31,14 @@ public class MypageController {
         MemberDto memberDto = new MemberDto(member);
         model.addAttribute("memberDto", memberDto);
         return "myPages/profile";
+    }
+
+    @GetMapping("/profile/{nickname}")
+    public String profilePage(@CurrentUser Member member, @PathVariable String nickname, Model model) {
+        MemberDto memberDto = memberService.profile(nickname);
+        model.addAttribute("memberDto", memberDto);
+        model.addAttribute("LoginUser", memberDto.getId().equals(member.getId()));
+        return "members/otherProfile";
     }
 
     // 내가 쓴 게시글 리스트
@@ -57,16 +67,11 @@ public class MypageController {
         return "myPages/updateProfileForm";
     }
 
-//    @PostMapping("/myPages/updateProfileForm")
-//    public String updateProfile(@AuthenticationPrincipal PrincipalDetails details,
-//                                @Valid MemberDto memberDto) {
-//        memberService.updateMember(details.getId(), memberDto);
-//        return "boardHome";
-//    }
-
     @PostMapping("/myPages/updateProfile")
-    public String updateProfile(@CurrentUser Member member, MemberDto memberDto) {
-        memberService.updateMember(member.getId(), memberDto);
+    public String updateProfile(@CurrentUser Member member, MemberDto memberDto,
+                                RedirectAttributes redirectAttributes) {
+        memberService.updateMember(member, memberDto);
+        redirectAttributes.addFlashAttribute("message", "프로필이 수정되었습니다.");
         return "redirect:/myPage";
     }
 }

@@ -18,7 +18,11 @@ public class MemberRepository {
     private final JPAQueryFactory queryFactory;
 
     public void save(Member member) { // 회원 저장
-        em.persist(member);
+        if (member.getId() == null) {
+            em.persist(member);
+        } else {
+            em.merge(member);
+        }
     }
 
     public Member findOne(Long id) { // 회원 id로 회원 조회
@@ -34,15 +38,15 @@ public class MemberRepository {
                 .fetch();
     }
 
-    public List<Member> findByName(String name) { // 같은 이름의 회원리스트 조회
+    public Member findByNickname(String nickname) { // 같은 이름의 회원리스트 조회
 //        return em.createQuery("select m from Member m where m.name = :name", Member.class)
 //                .setParameter("name", name)
 //                .getResultList();
 
         return queryFactory
                 .selectFrom(member)
-                .where(member.name.eq(name))
-                .fetch();
+                .where(member.nickname.eq(nickname))
+                .fetchOne();
     }
 
     public Member findByLoginId(String loginId) { // 특정 loginId를 같은 회원리스트 조회

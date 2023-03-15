@@ -35,7 +35,7 @@ public class Post {
     private PostCategory postCategory; // 게시판 카테고리
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    Set<PostLikes> likes = new HashSet<>();
+    private Set<PostLikes> likes = new HashSet<>();
 
     private LocalDateTime postDate;
     private int views;

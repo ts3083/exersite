@@ -66,7 +66,7 @@ public class MemberService {
     }
 
     // 프로필에서 내 정보 수정
-    @Transactional
+    /*@Transactional
     public void updateMember(Long memberId, MemberDto memberDto) {
         Member member = memberRepository.findOne(memberId);
         member.setName(memberDto.getName());
@@ -79,5 +79,23 @@ public class MemberService {
                 new PrincipalDetails(member),
                 member.getPassword());
         SecurityContextHolder.getContext().setAuthentication(token);
+    }*/
+
+    // 프로필에서 내 정보 수정 - 다시 로그인하지 않고 merge하는 방법
+    @Transactional
+    public void updateMember(Member member, MemberDto memberDto) {
+        member.setName(memberDto.getName());
+        member.setNickname(memberDto.getNickname());
+        member.setLoginId(memberDto.getLoginId());
+        member.setAddress(new Address(memberDto.getCity(), memberDto.getStreet(), memberDto.getZipcode()));
+        memberRepository.save(member);
+    }
+
+    public MemberDto profile(String nickname) {
+        Member member = memberRepository.findByNickname(nickname);
+        if (member == null) {
+            throw new IllegalArgumentException("회원을 찾을 수 없습니다.");
+        }
+        return new MemberDto(member);
     }
 }

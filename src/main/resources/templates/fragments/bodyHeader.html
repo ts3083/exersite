@@ -14,11 +14,15 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="#">Link</a>-->
-<!--                    </li>-->
                     <li class="nav-item">
-                        <a class="nav-link" href="/boardHome">게시판</a>
+                        <a class="nav-link" th:href="@{/boardHome}">게시판</a>
+                    </li>
+                    <!--<li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{/notification}"
+                        sec:authorize="isAuthenticated()">알림</a>
+                    </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/chatRooms}">채팅</a>
                     </li>
                 </ul>
 <!--                <form class="d-flex" role="search">-->
