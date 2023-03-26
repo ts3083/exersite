@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,6 +26,11 @@ public class ChatController {
 
     private final ChatService chatService;
     private final ChatRoomFormValidator chatRoomFormValidator;
+
+    @InitBinder("chatRoomForm")
+    public void chatRoomFormInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(chatRoomFormValidator);
+    }
 
     /**
      * 내 프로필에서 내가 참여하고 있는 채팅방 목록 보여주기
@@ -77,10 +84,6 @@ public class ChatController {
     @PostMapping("/chatRoom/new")
     public String createRoom(@Valid ChatRoomForm chatRoomForm, Errors errors,
                              @CurrentUser Member member, Model model) {
-        if (errors.hasErrors()) {
-            return "chat/roomForm";
-        }
-        chatRoomFormValidator.validate(chatRoomForm, errors);
         if (errors.hasErrors()) {
             return "chat/roomForm";
         }
