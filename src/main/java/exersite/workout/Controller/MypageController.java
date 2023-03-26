@@ -101,6 +101,6 @@ public class MypageController {
         }
         memberService.updatePassword(member, passwordChangeForm.getNewPassword());
         model.addAttribute("message", "success");
-        return "redirect:/passwordChange";
+        return "myPages/passwordChange";
     }
 }

@@ -16,7 +16,7 @@ public class PasswordChangeFormValidator implements Validator {
         PasswordChangeForm passwordChangeForm = (PasswordChangeForm) target;
         if(!passwordChangeForm.getNewPassword().equals(passwordChangeForm.getNewPasswordConfirm())) {
             // 입력한 패스워드가 다르면 에러
-            errors.rejectValue("newPassword", "wrong.value", "새 비밀번호가 일치하지 않습니다");
+            errors.rejectValue("newPasswordConfirm", "wrong.value", "새 비밀번호가 일치하지 않습니다");
         }
     }
 }
