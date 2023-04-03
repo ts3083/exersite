@@ -98,4 +98,10 @@ public class MemberService {
         }
         return new MemberDto(member);
     }
+
+    @Transactional
+    public void updatePassword(Member member, String newPassword) {
+        member.setPassword(passwordEncoder.encode(newPassword));
+        memberRepository.save(member);
+    }
 }

@@ -4,18 +4,24 @@ import exersite.workout.Config.CurrentUser;
 import exersite.workout.Controller.Dtos.MemberDto;
 import exersite.workout.Controller.Dtos.myCommentsDto;
 import exersite.workout.Controller.Dtos.myPostsDto;
+import exersite.workout.Controller.Forms.PasswordChangeForm;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Service.CommentService;
 import exersite.workout.Service.MemberService;
 import exersite.workout.Service.PostService;
+import exersite.workout.Validator.PasswordChangeFormValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -25,6 +31,11 @@ public class MypageController {
     private final MemberService memberService;
     private final PostService postService;
     private final CommentService commentService;
+
+    @InitBinder("passwordChangeForm")
+    public void passwordChangeFormInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(new PasswordChangeFormValidator());
+    }
 
     @GetMapping("/myPage")
     public String myPage(@CurrentUser Member member, Model model) {
@@ -73,5 +84,23 @@ public class MypageController {
         memberService.updateMember(member, memberDto);
         redirectAttributes.addFlashAttribute("message", "프로필이 수정되었습니다.");
         return "redirect:/myPage";
+    }
+
+    @GetMapping("/passwordChange")
+    public String passwordPopUpCheck(Model model) {
+        model.addAttribute(new PasswordChangeForm());
+        return "myPages/passwordChange";
+    }
+
+    @PostMapping("/passwordChange")
+    public String passwordChange(@CurrentUser Member member, @Valid PasswordChangeForm passwordChangeForm, Errors errors,
+                                 Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute("message", "fail");
+            return "myPages/passwordChange";
+        }
+        memberService.updatePassword(member, passwordChangeForm.getNewPassword());
+        model.addAttribute("message", "success");
+        return "myPages/passwordChange";
     }
 }

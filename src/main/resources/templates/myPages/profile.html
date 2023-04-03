@@ -79,8 +79,8 @@
                 <hr class="my-4">
 
                 <p>
-                    <a href="/editProfile" class="btn btn-primary my-2">내 정보 수정</a>
-                    <a href="#" class="btn btn-secondary my-2">비밀번호 변경</a>
+                    <a th:href="@{/editProfile}" class="btn btn-primary my-2">내 정보 수정</a>
+                    <input type="button" class="btn btn-secondary my-2" value="비밀번호 변경" onclick="openPopUp()">
                 </p>
             </form>
         </div>
@@ -88,4 +88,12 @@
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
 </body>
+<script type="text/javascript">
+    function openPopUp() {
+        // 함수 동작 테스트
+        //alert("팝업 테스트");
+        //window.open("[팝업을 띄울 파일명 path]", "[별칭]", "[팝업 옵션]")
+        window.open("/passwordChange", "passwordChange", "width=450, height=250, top=150, left=200");
+    }
+</script>
 </html>
