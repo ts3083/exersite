@@ -2,7 +2,10 @@ package exersite.workout.api;
 
 import exersite.workout.Repository.post.simplequery.PostDto;
 import exersite.workout.Service.PostService;
+import exersite.workout.api.Response.BasicResponse;
+import exersite.workout.api.Response.CommonResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +20,8 @@ public class PostApiController {
     private final PostService postService;
 
     @GetMapping("/posts/freeCategory")
-    public List<PostDto> freeCategoryPostsApi() {
-        return postService.findAllPostDtosDesc("free");
+    public ResponseEntity<? extends CommonResponse> freeCategoryPostsApi() {
+        return ResponseEntity.ok()
+                .body(new BasicResponse<>(postService.findAllPostDtosDesc("free")));
     }
 }
