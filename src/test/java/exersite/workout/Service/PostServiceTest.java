@@ -2,11 +2,10 @@ package exersite.workout.Service;
 
 import exersite.workout.Controller.Forms.MemberForm;
 import exersite.workout.Domain.Member.Address;
-import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
 import exersite.workout.Domain.Post.PostSearch;
 import exersite.workout.Repository.PostRepository;
-import exersite.workout.Repository.post.simplequery.PostDto;
+import exersite.workout.Controller.Dtos.PostDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

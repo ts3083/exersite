@@ -1,15 +1,13 @@
 package exersite.workout.Service;
 
-import exersite.workout.Controller.Dtos.CommentDto;
 import exersite.workout.Controller.Dtos.PostDetailDto;
 import exersite.workout.Controller.Dtos.myPostsDto;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
 import exersite.workout.Domain.Post.PostSearch;
-import exersite.workout.Repository.CommentRepository;
 import exersite.workout.Repository.MemberRepository;
 import exersite.workout.Repository.PostRepository;
-import exersite.workout.Repository.post.simplequery.PostDto;
+import exersite.workout.Controller.Dtos.PostDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

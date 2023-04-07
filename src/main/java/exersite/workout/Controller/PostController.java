@@ -1,30 +1,25 @@
 package exersite.workout.Controller;
 
 import exersite.workout.Config.CurrentUser;
-import exersite.workout.Config.PrincipalDetails;
 import exersite.workout.Controller.Dtos.CommentDto;
 import exersite.workout.Controller.Dtos.MemberDto;
 import exersite.workout.Controller.Dtos.PostDetailDto;
 import exersite.workout.Controller.Dtos.PostUpdateDto;
 import exersite.workout.Controller.Forms.CommentForm;
 import exersite.workout.Controller.Forms.PostForm;
-import exersite.workout.Domain.Comment.Comment;
 import exersite.workout.Domain.Member.Member;
 import exersite.workout.Domain.Post.Post;
 import exersite.workout.Domain.Post.PostCategory;
 import exersite.workout.Domain.Post.PostSearch;
-import exersite.workout.Repository.CommentRepository;
-import exersite.workout.Repository.post.simplequery.PostDto;
+import exersite.workout.Controller.Dtos.PostDto;
 import exersite.workout.Service.CommentService;
 import exersite.workout.Service.Likes.PostLikesService;
 import exersite.workout.Service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.Arrays;

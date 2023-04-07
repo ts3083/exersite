@@ -1,4 +1,4 @@
-package exersite.workout.Repository.post.simplequery;
+package exersite.workout.Controller.Dtos;
 
 import exersite.workout.Domain.Post.Post;
 import lombok.Data;
